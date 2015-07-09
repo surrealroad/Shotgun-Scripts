@@ -1,0 +1,416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		049325211B4EA84800618482 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325201B4EA84800618482 /* AppDelegate.m */; };
+		049325231B4EA84800618482 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325221B4EA84800618482 /* main.m */; };
+		049325251B4EA84800618482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049325241B4EA84800618482 /* Images.xcassets */; };
+		049325281B4EA84800618482 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 049325261B4EA84800618482 /* MainMenu.xib */; };
+		049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0493252E1B4EA84900618482 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 049325121B4EA84800618482 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 049325191B4EA84800618482;
+			remoteInfo = "Shotgun Scripts";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0493251A1B4EA84800618482 /* Shotgun Scripts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shotgun Scripts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0493251E1B4EA84800618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0493251F1B4EA84800618482 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		049325201B4EA84800618482 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		049325221B4EA84800618482 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		049325241B4EA84800618482 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		049325271B4EA84800618482 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		0493252D1B4EA84900618482 /* Shotgun ScriptsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shotgun ScriptsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		049325321B4EA84900618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shotgun_ScriptsTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		049325171B4EA84800618482 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0493252A1B4EA84900618482 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		049325111B4EA84800618482 = {
+			isa = PBXGroup;
+			children = (
+				0493251C1B4EA84800618482 /* Shotgun Scripts */,
+				049325301B4EA84900618482 /* Shotgun ScriptsTests */,
+				0493251B1B4EA84800618482 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0493251B1B4EA84800618482 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0493251A1B4EA84800618482 /* Shotgun Scripts.app */,
+				0493252D1B4EA84900618482 /* Shotgun ScriptsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0493251C1B4EA84800618482 /* Shotgun Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				0493251F1B4EA84800618482 /* AppDelegate.h */,
+				049325201B4EA84800618482 /* AppDelegate.m */,
+				049325241B4EA84800618482 /* Images.xcassets */,
+				049325261B4EA84800618482 /* MainMenu.xib */,
+				0493251D1B4EA84800618482 /* Supporting Files */,
+			);
+			path = "Shotgun Scripts";
+			sourceTree = "<group>";
+		};
+		0493251D1B4EA84800618482 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0493251E1B4EA84800618482 /* Info.plist */,
+				049325221B4EA84800618482 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		049325301B4EA84900618482 /* Shotgun ScriptsTests */ = {
+			isa = PBXGroup;
+			children = (
+				049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */,
+				049325311B4EA84900618482 /* Supporting Files */,
+			);
+			path = "Shotgun ScriptsTests";
+			sourceTree = "<group>";
+		};
+		049325311B4EA84900618482 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				049325321B4EA84900618482 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		049325191B4EA84800618482 /* Shotgun Scripts */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 049325371B4EA84900618482 /* Build configuration list for PBXNativeTarget "Shotgun Scripts" */;
+			buildPhases = (
+				049325161B4EA84800618482 /* Sources */,
+				049325171B4EA84800618482 /* Frameworks */,
+				049325181B4EA84800618482 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Shotgun Scripts";
+			productName = "Shotgun Scripts";
+			productReference = 0493251A1B4EA84800618482 /* Shotgun Scripts.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0493252C1B4EA84900618482 /* Shotgun ScriptsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0493253A1B4EA84900618482 /* Build configuration list for PBXNativeTarget "Shotgun ScriptsTests" */;
+			buildPhases = (
+				049325291B4EA84900618482 /* Sources */,
+				0493252A1B4EA84900618482 /* Frameworks */,
+				0493252B1B4EA84900618482 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0493252F1B4EA84900618482 /* PBXTargetDependency */,
+			);
+			name = "Shotgun ScriptsTests";
+			productName = "Shotgun ScriptsTests";
+			productReference = 0493252D1B4EA84900618482 /* Shotgun ScriptsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		049325121B4EA84800618482 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Jack James";
+				TargetAttributes = {
+					049325191B4EA84800618482 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					0493252C1B4EA84900618482 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 049325191B4EA84800618482;
+					};
+				};
+			};
+			buildConfigurationList = 049325151B4EA84800618482 /* Build configuration list for PBXProject "Shotgun Scripts" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 049325111B4EA84800618482;
+			productRefGroup = 0493251B1B4EA84800618482 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				049325191B4EA84800618482 /* Shotgun Scripts */,
+				0493252C1B4EA84900618482 /* Shotgun ScriptsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		049325181B4EA84800618482 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				049325251B4EA84800618482 /* Images.xcassets in Resources */,
+				049325281B4EA84800618482 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0493252B1B4EA84900618482 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		049325161B4EA84800618482 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				049325231B4EA84800618482 /* main.m in Sources */,
+				049325211B4EA84800618482 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		049325291B4EA84900618482 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0493252F1B4EA84900618482 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 049325191B4EA84800618482 /* Shotgun Scripts */;
+			targetProxy = 0493252E1B4EA84900618482 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		049325261B4EA84800618482 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				049325271B4EA84800618482 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		049325351B4EA84900618482 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		049325361B4EA84900618482 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		049325381B4EA84900618482 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Shotgun Scripts/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		049325391B4EA84900618482 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Shotgun Scripts/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		0493253B1B4EA84900618482 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Shotgun ScriptsTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shotgun Scripts.app/Contents/MacOS/Shotgun Scripts";
+			};
+			name = Debug;
+		};
+		0493253C1B4EA84900618482 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Shotgun ScriptsTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Shotgun Scripts.app/Contents/MacOS/Shotgun Scripts";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		049325151B4EA84800618482 /* Build configuration list for PBXProject "Shotgun Scripts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				049325351B4EA84900618482 /* Debug */,
+				049325361B4EA84900618482 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		049325371B4EA84900618482 /* Build configuration list for PBXNativeTarget "Shotgun Scripts" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				049325381B4EA84900618482 /* Debug */,
+				049325391B4EA84900618482 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		0493253A1B4EA84900618482 /* Build configuration list for PBXNativeTarget "Shotgun ScriptsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0493253B1B4EA84900618482 /* Debug */,
+				0493253C1B4EA84900618482 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 049325121B4EA84800618482 /* Project object */;
+}
