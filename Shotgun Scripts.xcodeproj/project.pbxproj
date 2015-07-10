@@ -19,6 +19,7 @@
 		049325471B4EA89D00618482 /* SGAPIScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325421B4EA89D00618482 /* SGAPIScript.m */; };
 		049325481B4EA89D00618482 /* shotgun_api3 in Resources */ = {isa = PBXBuildFile; fileRef = 049325431B4EA89D00618482 /* shotgun_api3 */; };
 		04968E861B50070D002CEC88 /* sg_import_files.py in Resources */ = {isa = PBXBuildFile; fileRef = 04968E851B50070D002CEC88 /* sg_import_files.py */; };
+		04968E881B501E8D002CEC88 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 04968E871B501E8D002CEC88 /* icon.icns */; };
 		04E5D50F1B4EB9D6004665A3 /* sg_update_submissions.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E5D50E1B4EB9D6004665A3 /* sg_update_submissions.py */; };
 		04E5D5111B4EC3DE004665A3 /* _boswell_apikeys.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E5D5101B4EC3DE004665A3 /* _boswell_apikeys.py */; };
 		04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E950CA1B4FC4B000D8276C /* wrapper.py */; };
@@ -56,6 +57,7 @@
 		049325421B4EA89D00618482 /* SGAPIScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAPIScript.m; path = ../SGAPIScript.m; sourceTree = "<group>"; };
 		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = ../shotgun_api3; sourceTree = "<group>"; };
 		04968E851B50070D002CEC88 /* sg_import_files.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_import_files.py; path = ../../Shotgun/Boswell/Scripts/sg_import_files.py; sourceTree = "<group>"; };
+		04968E871B501E8D002CEC88 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		04E5D50E1B4EB9D6004665A3 /* sg_update_submissions.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_update_submissions.py; path = ../../Shotgun/Boswell/Scripts/sg_update_submissions.py; sourceTree = "<group>"; };
 		04E5D5101B4EC3DE004665A3 /* _boswell_apikeys.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = _boswell_apikeys.py; path = ../../Shotgun/Boswell/Scripts/_boswell_apikeys.py; sourceTree = "<group>"; };
 		04E950CA1B4FC4B000D8276C /* wrapper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wrapper.py; sourceTree = SOURCE_ROOT; };
@@ -125,6 +127,7 @@
 		0493251D1B4EA84800618482 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				04968E871B501E8D002CEC88 /* icon.icns */,
 				049325431B4EA89D00618482 /* shotgun_api3 */,
 				0493251E1B4EA84800618482 /* Info.plist */,
 				049325221B4EA84800618482 /* main.m */,
@@ -245,6 +248,7 @@
 			files = (
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
 				049325451B4EA89D00618482 /* scripts.plist in Resources */,
+				04968E881B501E8D002CEC88 /* icon.icns in Resources */,
 				04E5D50F1B4EB9D6004665A3 /* sg_update_submissions.py in Resources */,
 				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
 				04E5D5111B4EC3DE004665A3 /* _boswell_apikeys.py in Resources */,
