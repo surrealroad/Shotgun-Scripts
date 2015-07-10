@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>scripts</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Import Version Media</string>
+			<key>description</key>
+			<string>Import media from a folder of files corresponding to versions in Shotgun</string>
+			<key>filename</key>
+			<string>sg_import_files</string>
+			<key>chooseFolder</key>
+			<true/>
+			<key>arguments</key>
+			<array>
+				<string>file</string>
+				<string>Version</string>
+				<string>sg_uploaded_movie</string>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Link Previs Versions</string>
+			<key>description</key>
+			<string>Link versions to potential previs shots</string>
+			<key>filename</key>
+			<string>sg_link_previs</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Update Submissions</string>
+			<key>description</key>
+			<string>Set submissions as viewed</string>
+			<key>filename</key>
+			<string>sg_update_submissions</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Update Deliveries</string>
+			<key>description</key>
+			<string>Update deliveries with zip contents</string>
+			<key>filename</key>
+			<string>sg_update_deliveries</string>
+		</dict>
+	</array>
+</dict>
+</plist>

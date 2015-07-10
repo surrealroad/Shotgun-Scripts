@@ -7,11 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0479DD1A1B4EE1EF005434A6 /* sg_link_previs.py in Resources */ = {isa = PBXBuildFile; fileRef = 0479DD181B4EE1EF005434A6 /* sg_link_previs.py */; };
+		0479DD1B1B4EE1EF005434A6 /* sg_update_deliveries.py in Resources */ = {isa = PBXBuildFile; fileRef = 0479DD191B4EE1EF005434A6 /* sg_update_deliveries.py */; };
 		049325211B4EA84800618482 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325201B4EA84800618482 /* AppDelegate.m */; };
 		049325231B4EA84800618482 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325221B4EA84800618482 /* main.m */; };
 		049325251B4EA84800618482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049325241B4EA84800618482 /* Images.xcassets */; };
 		049325281B4EA84800618482 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 049325261B4EA84800618482 /* MainMenu.xib */; };
 		049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */; };
+		049325441B4EA89D00618482 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0493253E1B4EA89D00618482 /* Logger.m */; };
+		049325451B4EA89D00618482 /* scripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0493253F1B4EA89D00618482 /* scripts.plist */; };
+		049325471B4EA89D00618482 /* SGAPIScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325421B4EA89D00618482 /* SGAPIScript.m */; };
+		049325481B4EA89D00618482 /* shotgun_api3 in Resources */ = {isa = PBXBuildFile; fileRef = 049325431B4EA89D00618482 /* shotgun_api3 */; };
+		04968E861B50070D002CEC88 /* sg_import_files.py in Resources */ = {isa = PBXBuildFile; fileRef = 04968E851B50070D002CEC88 /* sg_import_files.py */; };
+		04E5D50F1B4EB9D6004665A3 /* sg_update_submissions.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E5D50E1B4EB9D6004665A3 /* sg_update_submissions.py */; };
+		04E5D5111B4EC3DE004665A3 /* _boswell_apikeys.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E5D5101B4EC3DE004665A3 /* _boswell_apikeys.py */; };
+		04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E950CA1B4FC4B000D8276C /* wrapper.py */; };
+		04E950CE1B4FDFC900D8276C /* PythonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E950CD1B4FDFC900D8276C /* PythonHandler.m */; };
+		04EB7CC61B4EA9B3009B3A1B /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EB7CC51B4EA9B3009B3A1B /* Python.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0479DD181B4EE1EF005434A6 /* sg_link_previs.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_link_previs.py; path = ../../Shotgun/Boswell/Scripts/sg_link_previs.py; sourceTree = "<group>"; };
+		0479DD191B4EE1EF005434A6 /* sg_update_deliveries.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_update_deliveries.py; path = ../../Shotgun/Boswell/Scripts/sg_update_deliveries.py; sourceTree = "<group>"; };
 		0493251A1B4EA84800618482 /* Shotgun Scripts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shotgun Scripts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0493251E1B4EA84800618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0493251F1B4EA84800618482 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -35,6 +49,19 @@
 		0493252D1B4EA84900618482 /* Shotgun ScriptsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shotgun ScriptsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		049325321B4EA84900618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shotgun_ScriptsTests.m; sourceTree = "<group>"; };
+		0493253D1B4EA89D00618482 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../Logger.h; sourceTree = "<group>"; };
+		0493253E1B4EA89D00618482 /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Logger.m; path = ../Logger.m; sourceTree = "<group>"; };
+		0493253F1B4EA89D00618482 /* scripts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = scripts.plist; path = ../scripts.plist; sourceTree = "<group>"; };
+		049325411B4EA89D00618482 /* SGAPIScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGAPIScript.h; path = ../SGAPIScript.h; sourceTree = "<group>"; };
+		049325421B4EA89D00618482 /* SGAPIScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAPIScript.m; path = ../SGAPIScript.m; sourceTree = "<group>"; };
+		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = ../shotgun_api3; sourceTree = "<group>"; };
+		04968E851B50070D002CEC88 /* sg_import_files.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_import_files.py; path = ../../Shotgun/Boswell/Scripts/sg_import_files.py; sourceTree = "<group>"; };
+		04E5D50E1B4EB9D6004665A3 /* sg_update_submissions.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_update_submissions.py; path = ../../Shotgun/Boswell/Scripts/sg_update_submissions.py; sourceTree = "<group>"; };
+		04E5D5101B4EC3DE004665A3 /* _boswell_apikeys.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = _boswell_apikeys.py; path = ../../Shotgun/Boswell/Scripts/_boswell_apikeys.py; sourceTree = "<group>"; };
+		04E950CA1B4FC4B000D8276C /* wrapper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wrapper.py; sourceTree = SOURCE_ROOT; };
+		04E950CC1B4FDFC900D8276C /* PythonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PythonHandler.h; sourceTree = SOURCE_ROOT; };
+		04E950CD1B4FDFC900D8276C /* PythonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PythonHandler.m; sourceTree = SOURCE_ROOT; };
+		04EB7CC51B4EA9B3009B3A1B /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04EB7CC61B4EA9B3009B3A1B /* Python.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +86,7 @@
 		049325111B4EA84800618482 = {
 			isa = PBXGroup;
 			children = (
+				04EB7CC51B4EA9B3009B3A1B /* Python.framework */,
 				0493251C1B4EA84800618482 /* Shotgun Scripts */,
 				049325301B4EA84900618482 /* Shotgun ScriptsTests */,
 				0493251B1B4EA84800618482 /* Products */,
@@ -78,6 +107,14 @@
 			children = (
 				0493251F1B4EA84800618482 /* AppDelegate.h */,
 				049325201B4EA84800618482 /* AppDelegate.m */,
+				0493253D1B4EA89D00618482 /* Logger.h */,
+				0493253E1B4EA89D00618482 /* Logger.m */,
+				049325411B4EA89D00618482 /* SGAPIScript.h */,
+				049325421B4EA89D00618482 /* SGAPIScript.m */,
+				04E950CA1B4FC4B000D8276C /* wrapper.py */,
+				04E950CC1B4FDFC900D8276C /* PythonHandler.h */,
+				04E950CD1B4FDFC900D8276C /* PythonHandler.m */,
+				049325491B4EA8CB00618482 /* Plugins */,
 				049325241B4EA84800618482 /* Images.xcassets */,
 				049325261B4EA84800618482 /* MainMenu.xib */,
 				0493251D1B4EA84800618482 /* Supporting Files */,
@@ -88,6 +125,7 @@
 		0493251D1B4EA84800618482 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				049325431B4EA89D00618482 /* shotgun_api3 */,
 				0493251E1B4EA84800618482 /* Info.plist */,
 				049325221B4EA84800618482 /* main.m */,
 			);
@@ -109,6 +147,19 @@
 				049325321B4EA84900618482 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		049325491B4EA8CB00618482 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				0479DD181B4EE1EF005434A6 /* sg_link_previs.py */,
+				0479DD191B4EE1EF005434A6 /* sg_update_deliveries.py */,
+				04E5D5101B4EC3DE004665A3 /* _boswell_apikeys.py */,
+				04968E851B50070D002CEC88 /* sg_import_files.py */,
+				04E5D50E1B4EB9D6004665A3 /* sg_update_submissions.py */,
+				0493253F1B4EA89D00618482 /* scripts.plist */,
+			);
+			name = Plugins;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,6 +211,7 @@
 				TargetAttributes = {
 					049325191B4EA84800618482 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 5SVCLSDV6S;
 					};
 					0493252C1B4EA84900618482 = {
 						CreatedOnToolsVersion = 6.4;
@@ -192,7 +244,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
+				049325451B4EA89D00618482 /* scripts.plist in Resources */,
+				04E5D50F1B4EB9D6004665A3 /* sg_update_submissions.py in Resources */,
+				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
+				04E5D5111B4EC3DE004665A3 /* _boswell_apikeys.py in Resources */,
 				049325281B4EA84800618482 /* MainMenu.xib in Resources */,
+				04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */,
+				04968E861B50070D002CEC88 /* sg_import_files.py in Resources */,
+				0479DD1B1B4EE1EF005434A6 /* sg_update_deliveries.py in Resources */,
+				0479DD1A1B4EE1EF005434A6 /* sg_link_previs.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +270,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E950CE1B4FDFC900D8276C /* PythonHandler.m in Sources */,
+				049325441B4EA89D00618482 /* Logger.m in Sources */,
+				049325471B4EA89D00618482 /* SGAPIScript.m in Sources */,
 				049325231B4EA84800618482 /* main.m in Sources */,
 				049325211B4EA84800618482 /* AppDelegate.m in Sources */,
 			);
@@ -328,9 +391,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Shotgun Scripts/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -339,9 +404,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Shotgun Scripts/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -401,6 +468,7 @@
 				049325391B4EA84900618482 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0493253A1B4EA84900618482 /* Build configuration list for PBXNativeTarget "Shotgun ScriptsTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +477,7 @@
 				0493253C1B4EA84900618482 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
