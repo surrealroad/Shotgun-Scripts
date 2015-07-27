@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Python/Python.h>
 
 @interface Logger : NSObject {
     
