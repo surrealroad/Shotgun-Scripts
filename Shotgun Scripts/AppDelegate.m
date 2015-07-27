@@ -103,7 +103,14 @@
     NSMutableArray *args = [[NSMutableArray alloc] init];
     
     if ([script valueForKey:@"chooseFolder"]) {
-        [args addObject:@""];
+        // http://stackoverflow.com/a/10922591/262455
+        NSOpenPanel *panel = [NSOpenPanel openPanel];
+        [panel setAllowsMultipleSelection:NO];
+        [panel setCanChooseDirectories:YES];
+        [panel setCanChooseFiles:NO];
+        if ([panel runModal] != NSFileHandlingPanelOKButton) return;
+        NSURL *folder = [[panel URLs] lastObject];
+        [args addObject:[folder path]];
     }
     
     if ([script valueForKey:@"arguments"]) {
