@@ -42,6 +42,15 @@
 
 }
 
+// http://stackoverflow.com/a/1991162/262455
+- (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
+    [[NSAppleEventManager sharedAppleEventManager]
+     setEventHandler:self
+     andSelector:@selector(handleURLEvent:withReplyEvent:)
+     forEventClass:kInternetEventClass
+     andEventID:kAEGetURL]; // http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/ScriptableCocoaApplications/SApps_handle_AEs/SAppsHandleAEs.html#//apple_ref/doc/uid/20001239-BBCIDFHG
+}
+
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
@@ -138,6 +147,13 @@
 - (IBAction)runScript:(id)sender {
     NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
     [self execPythonScript:script];
+}
+
+- (void)handleURLEvent:(NSAppleEventDescriptor*)event
+        withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
+    NSString* url = [[event paramDescriptorForKeyword:keyDirectObject]
+                     stringValue];
+    NSLog(@"%@", url);
 }
 
 @end

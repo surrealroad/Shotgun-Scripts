@@ -15,5 +15,6 @@
 }
 
 - (void)handleNotification:(NSNotification*) notification;
+- (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
 
 @end
