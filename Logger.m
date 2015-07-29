@@ -21,7 +21,7 @@
 }
 
 - (void)setLogMessage:(NSString*) message {
-    NSLog(message);
+    NSLog(@"%@", message);
     [self.textView setString:message];
 }
 
@@ -39,7 +39,7 @@
 }
 
 - (void)appendLogMessage:(NSString*) message {
-    NSLog(message);
+    NSLog(@"%@", message);
     [self appendToTextView:message];
 }
 
@@ -55,7 +55,7 @@
 }
 
 - (void)appendAttributedLogMessage:(NSAttributedString*) message {
-    NSLog([message string]);
+    NSLog(@"%@", [message string]);
     [self appendAttributedToTextView:message];
 }
 
