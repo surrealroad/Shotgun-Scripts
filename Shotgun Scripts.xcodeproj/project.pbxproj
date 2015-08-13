@@ -11,10 +11,12 @@
 		0410E3501B66632400419990 /* sg_import_files.py in Resources */ = {isa = PBXBuildFile; fileRef = 0410E34D1B66632400419990 /* sg_import_files.py */; };
 		0410E3511B66632400419990 /* sg_update_asset_thumbnails.py in Resources */ = {isa = PBXBuildFile; fileRef = 0410E34E1B66632400419990 /* sg_update_asset_thumbnails.py */; };
 		0410E3551B666C1600419990 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0410E3541B666C1600419990 /* Python.framework */; };
+		045E237C1B7CD27000EAC3B7 /* NSURL+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */; };
+		045E237F1B7CD30100EAC3B7 /* NSString+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */; };
+		045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 045E23861B7CED2900EAC3B7 /* MainMenu.xib */; };
 		049325211B4EA84800618482 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325201B4EA84800618482 /* AppDelegate.m */; };
 		049325231B4EA84800618482 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325221B4EA84800618482 /* main.m */; };
 		049325251B4EA84800618482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049325241B4EA84800618482 /* Images.xcassets */; };
-		049325281B4EA84800618482 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 049325261B4EA84800618482 /* MainMenu.xib */; };
 		049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */; };
 		049325441B4EA89D00618482 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0493253E1B4EA89D00618482 /* Logger.m */; };
 		049325451B4EA89D00618482 /* scripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0493253F1B4EA89D00618482 /* scripts.plist */; };
@@ -40,13 +42,16 @@
 		0410E34E1B66632400419990 /* sg_update_asset_thumbnails.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_update_asset_thumbnails.py; path = "../../Shotgun/King Arthur/Scripts/sg_update_asset_thumbnails.py"; sourceTree = "<group>"; };
 		0410E3521B666B4D00419990 /* libpython2.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpython2.7.dylib; path = usr/lib/libpython2.7.dylib; sourceTree = SDKROOT; };
 		0410E3541B666C1600419990 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
+		045E237A1B7CD27000EAC3B7 /* NSURL+ParseCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+ParseCategory.h"; path = "../NSURL+ParseCategory.h"; sourceTree = "<group>"; };
+		045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+ParseCategory.m"; path = "../NSURL+ParseCategory.m"; sourceTree = "<group>"; };
+		045E237D1B7CD30100EAC3B7 /* NSString+ParseCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ParseCategory.h"; sourceTree = "<group>"; };
+		045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ParseCategory.m"; sourceTree = "<group>"; };
 		0493251A1B4EA84800618482 /* Shotgun Scripts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shotgun Scripts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0493251E1B4EA84800618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0493251F1B4EA84800618482 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		049325201B4EA84800618482 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		049325221B4EA84800618482 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		049325241B4EA84800618482 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		049325271B4EA84800618482 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		0493252D1B4EA84900618482 /* Shotgun ScriptsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Shotgun ScriptsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		049325321B4EA84900618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shotgun_ScriptsTests.m; sourceTree = "<group>"; };
@@ -55,6 +60,7 @@
 		0493253F1B4EA89D00618482 /* scripts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = scripts.plist; path = ../scripts.plist; sourceTree = "<group>"; };
 		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = "../../Shotgun/submodules/shotgun/python-api/shotgun_api3"; sourceTree = "<group>"; };
 		04968E871B501E8D002CEC88 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		04E7392E1B7CF5A600674BDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		04E950CA1B4FC4B000D8276C /* wrapper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wrapper.py; sourceTree = SOURCE_ROOT; };
 		04E950CC1B4FDFC900D8276C /* PythonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PythonHandler.h; sourceTree = SOURCE_ROOT; };
 		04E950CD1B4FDFC900D8276C /* PythonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PythonHandler.m; sourceTree = SOURCE_ROOT; };
@@ -102,6 +108,10 @@
 		0493251C1B4EA84800618482 /* Shotgun Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				045E237D1B7CD30100EAC3B7 /* NSString+ParseCategory.h */,
+				045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */,
+				045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */,
+				045E237A1B7CD27000EAC3B7 /* NSURL+ParseCategory.h */,
 				0493251F1B4EA84800618482 /* AppDelegate.h */,
 				049325201B4EA84800618482 /* AppDelegate.m */,
 				0493253D1B4EA89D00618482 /* Logger.h */,
@@ -111,7 +121,7 @@
 				04E950CD1B4FDFC900D8276C /* PythonHandler.m */,
 				049325491B4EA8CB00618482 /* Plugins */,
 				049325241B4EA84800618482 /* Images.xcassets */,
-				049325261B4EA84800618482 /* MainMenu.xib */,
+				045E23861B7CED2900EAC3B7 /* MainMenu.xib */,
 				0493251D1B4EA84800618482 /* Supporting Files */,
 			);
 			path = "Shotgun Scripts";
@@ -237,13 +247,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */,
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
 				0410E34F1B66632400419990 /* _ka_apikeys.py in Resources */,
 				049325451B4EA89D00618482 /* scripts.plist in Resources */,
 				04968E881B501E8D002CEC88 /* icon.icns in Resources */,
 				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
 				0410E3511B66632400419990 /* sg_update_asset_thumbnails.py in Resources */,
-				049325281B4EA84800618482 /* MainMenu.xib in Resources */,
 				04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */,
 				0410E3501B66632400419990 /* sg_import_files.py in Resources */,
 			);
@@ -264,7 +274,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				04E950CE1B4FDFC900D8276C /* PythonHandler.m in Sources */,
+				045E237C1B7CD27000EAC3B7 /* NSURL+ParseCategory.m in Sources */,
 				049325441B4EA89D00618482 /* Logger.m in Sources */,
+				045E237F1B7CD30100EAC3B7 /* NSString+ParseCategory.m in Sources */,
 				049325231B4EA84800618482 /* main.m in Sources */,
 				049325211B4EA84800618482 /* AppDelegate.m in Sources */,
 			);
@@ -289,10 +301,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		049325261B4EA84800618482 /* MainMenu.xib */ = {
+		045E23861B7CED2900EAC3B7 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				049325271B4EA84800618482 /* Base */,
+				04E7392E1B7CF5A600674BDF /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

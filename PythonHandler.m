@@ -66,6 +66,7 @@
 
 // returns YES on success
 - (BOOL) loadScriptAtPath:(NSString*)scriptPath runFunction:(NSString*)functionName usingLogger:(Logger*)logger withArguments:(NSMutableArray*)arguments {
+    NSLog(@"Executing %@ from %@ with arguments: %@", functionName, scriptPath, arguments);
     Class executor = NSClassFromString(@"PyExecutor");
     return [executor loadModuleAtPath:scriptPath
                          functionName:functionName
@@ -88,7 +89,7 @@
     }
     
     [logger appendErrorMessage:err];
-    PyErr_Clear();
+//    PyErr_Print();
 }
 
 @end

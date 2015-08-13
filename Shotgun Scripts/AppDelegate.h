@@ -12,9 +12,11 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     NSPipe *pipe;
     NSFileHandle *pipeReadHandle;
+    NSArray *scripts;
 }
 
 - (void)handleNotification:(NSNotification*) notification;
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
+- (NSUInteger) indexOfScriptWithFilename: (NSString*) filename;
 
 @end
