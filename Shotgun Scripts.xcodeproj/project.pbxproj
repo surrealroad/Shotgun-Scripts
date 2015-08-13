@@ -18,7 +18,6 @@
 		049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */; };
 		049325441B4EA89D00618482 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0493253E1B4EA89D00618482 /* Logger.m */; };
 		049325451B4EA89D00618482 /* scripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0493253F1B4EA89D00618482 /* scripts.plist */; };
-		049325471B4EA89D00618482 /* SGAPIScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325421B4EA89D00618482 /* SGAPIScript.m */; };
 		049325481B4EA89D00618482 /* shotgun_api3 in Resources */ = {isa = PBXBuildFile; fileRef = 049325431B4EA89D00618482 /* shotgun_api3 */; };
 		04968E881B501E8D002CEC88 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 04968E871B501E8D002CEC88 /* icon.icns */; };
 		04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E950CA1B4FC4B000D8276C /* wrapper.py */; };
@@ -54,8 +53,6 @@
 		0493253D1B4EA89D00618482 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../Logger.h; sourceTree = "<group>"; };
 		0493253E1B4EA89D00618482 /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Logger.m; path = ../Logger.m; sourceTree = "<group>"; };
 		0493253F1B4EA89D00618482 /* scripts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = scripts.plist; path = ../scripts.plist; sourceTree = "<group>"; };
-		049325411B4EA89D00618482 /* SGAPIScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SGAPIScript.h; path = ../SGAPIScript.h; sourceTree = "<group>"; };
-		049325421B4EA89D00618482 /* SGAPIScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SGAPIScript.m; path = ../SGAPIScript.m; sourceTree = "<group>"; };
 		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = "../../Shotgun/submodules/shotgun/python-api/shotgun_api3"; sourceTree = "<group>"; };
 		04968E871B501E8D002CEC88 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		04E950CA1B4FC4B000D8276C /* wrapper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wrapper.py; sourceTree = SOURCE_ROOT; };
@@ -109,8 +106,6 @@
 				049325201B4EA84800618482 /* AppDelegate.m */,
 				0493253D1B4EA89D00618482 /* Logger.h */,
 				0493253E1B4EA89D00618482 /* Logger.m */,
-				049325411B4EA89D00618482 /* SGAPIScript.h */,
-				049325421B4EA89D00618482 /* SGAPIScript.m */,
 				04E950CA1B4FC4B000D8276C /* wrapper.py */,
 				04E950CC1B4FDFC900D8276C /* PythonHandler.h */,
 				04E950CD1B4FDFC900D8276C /* PythonHandler.m */,
@@ -270,7 +265,6 @@
 			files = (
 				04E950CE1B4FDFC900D8276C /* PythonHandler.m in Sources */,
 				049325441B4EA89D00618482 /* Logger.m in Sources */,
-				049325471B4EA89D00618482 /* SGAPIScript.m in Sources */,
 				049325231B4EA84800618482 /* main.m in Sources */,
 				049325211B4EA84800618482 /* AppDelegate.m in Sources */,
 			);
