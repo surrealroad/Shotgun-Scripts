@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0410E34F1B66632400419990 /* _ka_apikeys.py in Resources */ = {isa = PBXBuildFile; fileRef = 0410E34C1B66632400419990 /* _ka_apikeys.py */; };
-		0410E3501B66632400419990 /* sg_import_files.py in Resources */ = {isa = PBXBuildFile; fileRef = 0410E34D1B66632400419990 /* sg_import_files.py */; };
-		0410E3511B66632400419990 /* sg_update_asset_thumbnails.py in Resources */ = {isa = PBXBuildFile; fileRef = 0410E34E1B66632400419990 /* sg_update_asset_thumbnails.py */; };
 		0410E3551B666C1600419990 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0410E3541B666C1600419990 /* Python.framework */; };
 		045E237C1B7CD27000EAC3B7 /* NSURL+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */; };
 		045E237F1B7CD30100EAC3B7 /* NSString+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */; };
@@ -37,9 +34,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0410E34C1B66632400419990 /* _ka_apikeys.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = _ka_apikeys.py; path = "../../Shotgun/King Arthur/Scripts/_ka_apikeys.py"; sourceTree = "<group>"; };
-		0410E34D1B66632400419990 /* sg_import_files.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_import_files.py; path = "../../Shotgun/King Arthur/Scripts/sg_import_files.py"; sourceTree = "<group>"; };
-		0410E34E1B66632400419990 /* sg_update_asset_thumbnails.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = sg_update_asset_thumbnails.py; path = "../../Shotgun/King Arthur/Scripts/sg_update_asset_thumbnails.py"; sourceTree = "<group>"; };
 		0410E3521B666B4D00419990 /* libpython2.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpython2.7.dylib; path = usr/lib/libpython2.7.dylib; sourceTree = SDKROOT; };
 		0410E3541B666C1600419990 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		045E237A1B7CD27000EAC3B7 /* NSURL+ParseCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+ParseCategory.h"; path = "../NSURL+ParseCategory.h"; sourceTree = "<group>"; };
@@ -158,9 +152,6 @@
 		049325491B4EA8CB00618482 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				0410E34C1B66632400419990 /* _ka_apikeys.py */,
-				0410E34D1B66632400419990 /* sg_import_files.py */,
-				0410E34E1B66632400419990 /* sg_update_asset_thumbnails.py */,
 				0493253F1B4EA89D00618482 /* scripts.plist */,
 			);
 			name = Plugins;
@@ -249,13 +240,10 @@
 			files = (
 				045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */,
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
-				0410E34F1B66632400419990 /* _ka_apikeys.py in Resources */,
 				049325451B4EA89D00618482 /* scripts.plist in Resources */,
 				04968E881B501E8D002CEC88 /* icon.icns in Resources */,
 				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
-				0410E3511B66632400419990 /* sg_update_asset_thumbnails.py in Resources */,
 				04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */,
-				0410E3501B66632400419990 /* sg_import_files.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

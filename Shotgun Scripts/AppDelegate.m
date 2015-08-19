@@ -120,7 +120,10 @@
         [panel setAllowsMultipleSelection:NO];
         [panel setCanChooseDirectories:YES];
         [panel setCanChooseFiles:NO];
-        if ([panel runModal] != NSFileHandlingPanelOKButton) return;
+        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+            [self restoreInterface];
+            return;
+        }
         NSURL *folder = [[panel URLs] lastObject];
         [args addObject:[folder path]];
     }
@@ -139,6 +142,10 @@
         NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
     }
     
+    [self restoreInterface];
+}
+
+- (void)restoreInterface {
     // stop progress indicator
     [self.circularProgress setHidden:YES];
     // enable buttons/fields
