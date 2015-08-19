@@ -121,6 +121,7 @@
         [panel setCanChooseDirectories:YES];
         [panel setCanChooseFiles:NO];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
+            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             [self restoreInterface];
             return;
         }
