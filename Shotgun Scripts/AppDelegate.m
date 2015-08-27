@@ -77,7 +77,12 @@
     for (id script in scripts) {
         // add full path to script dict
         NSString *path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
-        if(path) {
+        BOOL shouldDisplay = YES;
+        if([script valueForKey:@"visible"]) {
+            shouldDisplay = [[script valueForKey:@"visible"] boolValue];
+            if(!shouldDisplay) NSLog(@"Skipping hidden script %@", [script valueForKey:@"name"]);
+        }
+        if(path && shouldDisplay) {
             NSLog(@"Adding script %@", [script valueForKey:@"name"]);
             [script setObject:path forKey:@"filepath"];
             [self.controller addObject:@{
@@ -212,6 +217,11 @@
             ^BOOL(id dictionary, NSUInteger idx, BOOL *stop) {
                 return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
             }];
+}
+
+// terminate on last window closed
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed {
+    return YES;
 }
 
 @end
