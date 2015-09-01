@@ -190,8 +190,14 @@
         NSLog(@"Executing %@", scriptFilename);
         NSMutableDictionary *script = scripts[scriptIndex];
         
-        // set arguments
-        [script setObject:@[params] forKey:@"arguments"];
+        // add full path to script dict
+        NSString *path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+        [script setObject:path forKey:@"filepath"];
+        
+        // set arguments (there's probably a cleaner way to do this)
+        NSMutableArray *args = [[NSMutableArray alloc] initWithObjects:params, nil];
+        if([script valueForKey:@"arguments"]) [args addObjectsFromArray:[script valueForKey:@"arguments"]];
+        [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
         // remove all other options
