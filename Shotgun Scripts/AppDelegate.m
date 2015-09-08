@@ -149,6 +149,15 @@
     }
     
     [self restoreInterface];
+    
+    // terminate on completion if needed
+    BOOL shouldTerminate = NO;
+    if ([script valueForKey:@"quitAfter"]) {
+        shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
+    }
+    
+    if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
+    //exit(0);
 }
 
 - (void)restoreInterface {
@@ -211,10 +220,6 @@
 
         [self execPythonScript:script];
     }
-
-    // terminate on completion
-    [[NSApplication sharedApplication] terminate:nil];
-    //exit(0);
 }
 
 // http://stackoverflow.com/a/5135053/262455
