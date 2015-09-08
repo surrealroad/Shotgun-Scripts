@@ -171,7 +171,13 @@
 
 - (IBAction)runScript:(id)sender {
     NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
-    [self execPythonScript:script];
+    
+    // don't allow running of hidden scripts via button
+    BOOL shouldRun = YES;
+    if ([script valueForKey:@"visible"]) {
+        shouldRun = [[script valueForKey:@"visible"] boolValue];
+    }
+    if(shouldRun)[self execPythonScript:script];
 }
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event
