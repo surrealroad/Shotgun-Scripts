@@ -210,8 +210,9 @@
         [script setObject:path forKey:@"filepath"];
         
         // set arguments (there's probably a cleaner way to do this)
+        NSMutableArray *oldargs = [script valueForKey:@"arguments"];
         NSMutableArray *args = [[NSMutableArray alloc] initWithObjects:params, nil];
-        if([script valueForKey:@"arguments"]) [args addObjectsFromArray:[script valueForKey:@"arguments"]];
+        if([script valueForKey:@"arguments"]) [args addObjectsFromArray:oldargs];
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
@@ -225,6 +226,8 @@
         [self.controller setSelectionIndex:0];
 
         [self execPythonScript:script];
+        // reset arguments
+        [script setObject:oldargs forKey:@"arguments"];
     }
 }
 
