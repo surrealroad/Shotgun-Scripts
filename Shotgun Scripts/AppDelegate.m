@@ -29,7 +29,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+
+}
+
+// http://stackoverflow.com/a/1991162/262455
+- (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
+    // Initialise python
+    if (![[PythonHandler sharedManager] setupPythonEnvironment])
+        [self.logger appendErrorMessage:@"Error: python environment could not be set up."];
     
+    // Intercept stdout
     // http://stackoverflow.com/a/2590723/262455
     pipe = [NSPipe pipe] ;
     pipeReadHandle = [pipe fileHandleForReading] ;
@@ -37,14 +46,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
     [pipeReadHandle readInBackgroundAndNotify] ;
-
-}
-
-// http://stackoverflow.com/a/1991162/262455
-- (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
-    if (![[PythonHandler sharedManager] setupPythonEnvironment])
-        [self.logger appendErrorMessage:@"Error: python environment could not be set up."];
     
+    // Set up URL handling
     [[NSAppleEventManager sharedAppleEventManager]
      setEventHandler:self
      andSelector:@selector(handleURLEvent:withReplyEvent:)
@@ -186,7 +189,6 @@
 /*    expected URL in the form
         sgscripts://sg_gantt?user_id=42&user_login=jack.james&title=&entity_type=Task&server_hostname=nightingale.shotgunstudio.com&referrer_path=%2Fdetail%2FHumanUser%2F42&page_id=1861&session_uuid=dd8841a0-41cb-11e5-9b33-0242ac110002&project_name=Nightingale%20VFX&project_id=67&ids=2076%2C2077%2C2078%2C2132%2C2133%2C2134%2C2135%2C2136%2C2137%2C2138&selected_ids=2076%2C2078%2C2132%2C2133%2C2136&cols=content&cols=step&cols=sg_status_list&cols=task_assignees&cols=start_date&cols=due_date&cols=duration&cols=entity&column_display_names=Task%20Name&column_display_names=Pipeline%20Step&column_display_names=Status&column_display_names=Assigned%20To&column_display_names=Start%20Date&column_display_names=Due%20Date&column_display_names=Duration&column_display_names=Link&grouping_column=entity&grouping_method=exact&grouping_direction=asc
 */
-    
     NSString* urlString = [[event paramDescriptorForKeyword:keyDirectObject]
                      stringValue];
     NSLog(@"%@", urlString);
@@ -212,7 +214,7 @@
         // set arguments (there's probably a cleaner way to do this)
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];
         NSMutableArray *args = [[NSMutableArray alloc] initWithObjects:params, nil];
-        if([script valueForKey:@"arguments"]) [args addObjectsFromArray:oldargs];
+        if(oldargs) [args addObjectsFromArray:oldargs];
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
@@ -224,10 +226,10 @@
                                      }];
         // reset options to first in list
         [self.controller setSelectionIndex:0];
-
         [self execPythonScript:script];
         // reset arguments
-        [script setObject:oldargs forKey:@"arguments"];
+        if(oldargs) [script setObject:oldargs forKey:@"arguments"];
+        else [script removeObjectForKey:@"arguments"];
     }
 }
 
@@ -240,7 +242,7 @@
 }
 
 // terminate on last window closed
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed {
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
     return YES;
 }
 
