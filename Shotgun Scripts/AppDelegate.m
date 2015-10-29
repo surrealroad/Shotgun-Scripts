@@ -137,6 +137,28 @@
         [args addObject:[folder path]];
     }
     
+    if ([script valueForKey:@"saveFile"]) {
+        NSDictionary *saveOptions = [script valueForKey:@"saveFile"];
+        NSSavePanel *panel = [NSSavePanel savePanel];
+        [panel setMessage:@"Choose where to save the file"]; // Message inside modal window
+        [panel setAllowsOtherFileTypes:YES];
+        [panel setExtensionHidden:YES];
+        [panel setCanCreateDirectories:YES];
+        if ([saveOptions valueForKey:@"default"]) {
+            [panel setNameFieldStringValue:[saveOptions valueForKey:@"default"]];
+        }
+        
+        [panel setTitle:@"Save file as"]; // Window title
+        
+        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
+            [self restoreInterface];
+            return;
+        }
+        NSURL *folder = [panel URL];
+        [args addObject:[folder path]];
+    }
+    
     if ([script valueForKey:@"arguments"]) {
         [args addObjectsFromArray:[script valueForKey:@"arguments"]];
     }
@@ -213,8 +235,9 @@
         
         // set arguments (there's probably a cleaner way to do this)
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];
-        NSMutableArray *args = [[NSMutableArray alloc] initWithObjects:params, nil];
+        NSMutableArray *args = [[NSMutableArray alloc] init];
         if(oldargs) [args addObjectsFromArray:oldargs];
+        [args addObject:params];
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
