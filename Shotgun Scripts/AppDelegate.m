@@ -284,6 +284,14 @@
     // http://stackoverflow.com/a/1967451/262455
     NSString *scriptFilename = [url host];
     NSDictionary *params = [url queryDictionary];
+    
+    // encode as json string
+    // http://stackoverflow.com/a/9020923/262455
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params
+                                                       options:0 // Pass 0 if you don't care about the readability of the generated string
+                                                         error:&error];
+    
 
     NSUInteger scriptIndex = [self indexOfScriptWithFilename:scriptFilename];
     NSLog(@"Params: %@",params);
@@ -299,8 +307,12 @@
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];
         NSMutableArray *args = [[NSMutableArray alloc] init];
         if(oldargs) [args addObjectsFromArray:oldargs];
-        // only the url is passed as a single parameter, the script will need to parse it out
-        [args addObject:urlString];
+        if (! jsonData) {
+            NSLog(@"Got an error: %@", error);
+        } else {
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            [args addObject:jsonString];
+        }
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
