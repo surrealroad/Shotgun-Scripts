@@ -89,7 +89,6 @@
 
 // intercepts stdout
 - (void)handleNotification:(NSNotification*) notification {
-    NSLog(@"Notify");
     [pipeReadHandle readInBackgroundAndNotify] ;
     NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
     // Do whatever you want with str
@@ -98,7 +97,7 @@
 
 // intercepts stderr
 - (void)handleErrorNotification:(NSNotification*) notification {
-    [pipeReadHandle readInBackgroundAndNotify] ;
+    [errorPipeReadHandle readInBackgroundAndNotify] ;
     NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
     // Do whatever you want with str
     [self.logger appendErrorMessage:str];
@@ -168,7 +167,9 @@
         
         if (!success) {
             //[pythonHandler logPythonError:self.logger]; // doesn't appear to work
-            NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
+            });
         }
         
         [self restoreInterface];
@@ -194,14 +195,18 @@
     additional arguments
  */
 - (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments {
-    // Set up piping
+    // Set up piping for stdout
     // http://stackoverflow.com/a/2590723/262455
     pipe = [NSPipe pipe] ;
-    errorPipe = [NSPipe pipe] ;
     pipeReadHandle = [pipe fileHandleForReading] ;
-    //dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stdout)) ;
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
     [pipeReadHandle readInBackgroundAndNotify] ;
+    
+    // Set up piping for stderr
+    errorPipe = [NSPipe pipe] ;
+    errorPipeReadHandle = [errorPipe fileHandleForReading] ;
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleErrorNotification:) name: NSFileHandleReadCompletionNotification object: errorPipeReadHandle] ;
+    [errorPipeReadHandle readInBackgroundAndNotify] ;
     
     NSTask* task = [[NSTask alloc] init];
     task.launchPath = @"/usr/bin/python";
@@ -241,12 +246,14 @@
 }
 
 - (void)restoreInterface {
-    // stop progress indicator
-    [self.circularProgress setHidden:YES];
-    // enable buttons/fields
-    [self.runButton setEnabled:YES];
-    [self.popupButton setEnabled:YES];
-    [self.textView setEditable:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // stop progress indicator
+        [self.circularProgress setHidden:YES];
+        // enable buttons/fields
+        [self.runButton setEnabled:YES];
+        [self.popupButton setEnabled:YES];
+        [self.textView setEditable:YES];
+    });
 }
 
 - (IBAction)runScript:(id)sender {
