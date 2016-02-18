@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "PythonHandler.h"
 #import "Logger.h"
 #import "NSURL+ParseCategory.h"
 
@@ -34,15 +33,12 @@
 
 // http://stackoverflow.com/a/1991162/262455
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
-    // Initialise python
-    if (![[PythonHandler sharedManager] setupPythonEnvironment])
-        [self.logger appendErrorMessage:@"Error: python environment could not be set up."];
     
-    // Intercept stdout
+    // Set up piping
     // http://stackoverflow.com/a/2590723/262455
     pipe = [NSPipe pipe] ;
     pipeReadHandle = [pipe fileHandleForReading] ;
-    dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stdout)) ;
+    //dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stdout)) ;
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
     [pipeReadHandle readInBackgroundAndNotify] ;
@@ -58,7 +54,6 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
-    Py_Finalize();
 }
 
 - (void) awakeFromNib {
@@ -80,6 +75,8 @@
     for (id script in scripts) {
         // add full path to script dict
         NSString *path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+        // default function name
+        if(![script valueForKey:@"function"]) [script setValue:@"process_action" forKey:@"function"];
         BOOL shouldDisplay = YES;
         if([script valueForKey:@"visible"]) {
             shouldDisplay = [[script valueForKey:@"visible"] boolValue];
@@ -107,6 +104,14 @@
     [self.logger appendLogMessage:str];
 }
 
+// intercepts stderr
+- (void)handleErrorNotification:(NSNotification*) notification {
+    [pipeReadHandle readInBackgroundAndNotify] ;
+    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
+    // Do whatever you want with str
+    [self.logger appendErrorMessage:str];
+}
+
 - (void)execPythonScript:(NSDictionary*) script {
     // runs the script's process_action()
     [self.logger appendLogMessage:[NSString stringWithFormat:@"Running %@\n",[script valueForKey:@"name"]]];
@@ -118,7 +123,7 @@
     [self.popupButton setEnabled:NO];
     [self.textView setEditable:NO];
     
-    PythonHandler *pythonHandler = [PythonHandler sharedManager];
+    //PythonHandler *pythonHandler = [PythonHandler sharedManager];
     // set arguments
     NSMutableArray *args = [[NSMutableArray alloc] init];
     
@@ -163,26 +168,75 @@
         [args addObjectsFromArray:[script valueForKey:@"arguments"]];
     }
     
-    BOOL success = [pythonHandler loadScriptAtPath:[script valueForKey:@"filepath"]
-                                       runFunction:@"process_action"
-                                       usingLogger:[self logger]
-                                     withArguments:args];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
-    if (!success) {
-        [pythonHandler logPythonError:self.logger]; // doesn't appear to work
-        NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
+        BOOL success = [self runPythonScript:[script valueForKey:@"filepath"]
+                                 runFunction:[script valueForKey:@"function"]
+                               withArguments:args];
+        
+        if (!success) {
+            //[pythonHandler logPythonError:self.logger]; // doesn't appear to work
+            NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
+        }
+        
+        [self restoreInterface];
+        
+        // terminate on completion if needed
+        BOOL shouldTerminate = NO;
+        if ([script valueForKey:@"quitAfter"]) {
+            shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
+        }
+        
+        if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
+        //exit(0);
+        
+    });
+}
+
+// http://stackoverflow.com/a/8874124/262455
+// returns YES on success
+/*  Script is called in the following manner:
+    /usr/bin/python ¬
+    /path/to/script ¬
+    function ¬
+    additional arguments
+ */
+- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments {
+    NSTask* task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/python";
+    NSLog(@"Running %@:%@ with arguments: %@", scriptPath, functionName, arguments);
+    NSString *wrapperPath = [[NSBundle mainBundle] pathForResource:@"wrapper" ofType:@"py"];
+    NSMutableArray* args = [NSMutableArray arrayWithObjects: wrapperPath, scriptPath, functionName, nil];
+    [args addObjectsFromArray: arguments];
+    task.arguments = args;
+    
+    // NSLog breaks if we don't do this...
+    [task setStandardInput: [NSPipe pipe]];
+    
+//    [task setStandardOutput:pipe];
+//    [task setStandardError: pipe];
+    
+    // http://stackoverflow.com/a/8269886/262455
+    NSDictionary *defaultEnvironment = [[NSProcessInfo processInfo] environment];
+    NSMutableDictionary *environment = [[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment];
+    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
+    [task setEnvironment:environment];
+    
+    [task launch];
+    
+    //NSData* data = [[stdOutPipe fileHandleForReading] readDataToEndOfFile];
+    
+    [task waitUntilExit];
+    
+    NSInteger exitCode = task.terminationStatus;
+    
+    if (exitCode != 0)
+    {
+        NSLog(@"Error!");
+        return NO;
     }
     
-    [self restoreInterface];
-    
-    // terminate on completion if needed
-    BOOL shouldTerminate = NO;
-    if ([script valueForKey:@"quitAfter"]) {
-        shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
-    }
-    
-    if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
-    //exit(0);
+    return YES;
 }
 
 - (void)restoreInterface {

@@ -7,16 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Python/Python.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
-    NSPipe *pipe;
-    NSFileHandle *pipeReadHandle;
+    NSPipe *pipe, *errorPipe;
+    NSFileHandle *pipeReadHandle, *errorPipeReadHandle;
     NSArray *scripts;
 }
 
 - (void)handleNotification:(NSNotification*) notification;
+- (void)handleErrorNotification:(NSNotification*) notification;
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
+- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments;
 - (NSUInteger) indexOfScriptWithFilename: (NSString*) filename;
 
 @end

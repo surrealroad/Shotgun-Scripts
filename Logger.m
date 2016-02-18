@@ -16,7 +16,7 @@
 @implementation Logger
 
 - (id)init {
-    NSLog(@"Starting up");
+    //NSLog(@"Starting up");
     return [super init];
 }
 
@@ -39,11 +39,12 @@
 }
 
 - (void)appendLogMessage:(NSString*) message {
-    NSLog(@"%@", message);
+    //NSLog(@"%@", message);
     [self appendToTextView:message];
 }
 
 - (void)appendErrorMessage:(NSString*) message {
+    NSLog(@"%@", message);
     NSAttributedString* attrStr = [[NSAttributedString alloc]
        initWithString:message
        attributes: @{
@@ -55,7 +56,7 @@
 }
 
 - (void)appendAttributedLogMessage:(NSAttributedString*) message {
-    NSLog(@"%@", [message string]);
+    //NSLog(@"%@", [message string]);
     [self appendAttributedToTextView:message];
 }
 
