@@ -299,7 +299,8 @@
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];
         NSMutableArray *args = [[NSMutableArray alloc] init];
         if(oldargs) [args addObjectsFromArray:oldargs];
-        [args addObject:params];
+        // only the url is passed as a single parameter, the script will need to parse it out
+        [args addObject:urlString];
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
