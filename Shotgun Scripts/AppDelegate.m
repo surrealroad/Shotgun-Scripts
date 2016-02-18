@@ -34,15 +34,6 @@
 // http://stackoverflow.com/a/1991162/262455
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
     
-    // Set up piping
-    // http://stackoverflow.com/a/2590723/262455
-    pipe = [NSPipe pipe] ;
-    pipeReadHandle = [pipe fileHandleForReading] ;
-    //dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stdout)) ;
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
-    [pipeReadHandle readInBackgroundAndNotify] ;
-    
     // Set up URL handling
     [[NSAppleEventManager sharedAppleEventManager]
      setEventHandler:self
@@ -98,6 +89,7 @@
 
 // intercepts stdout
 - (void)handleNotification:(NSNotification*) notification {
+    NSLog(@"Notify");
     [pipeReadHandle readInBackgroundAndNotify] ;
     NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
     // Do whatever you want with str
@@ -202,20 +194,31 @@
     additional arguments
  */
 - (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments {
+    // Set up piping
+    // http://stackoverflow.com/a/2590723/262455
+    pipe = [NSPipe pipe] ;
+    errorPipe = [NSPipe pipe] ;
+    pipeReadHandle = [pipe fileHandleForReading] ;
+    //dup2([[pipe fileHandleForWriting] fileDescriptor], fileno(stdout)) ;
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
+    [pipeReadHandle readInBackgroundAndNotify] ;
+    
     NSTask* task = [[NSTask alloc] init];
     task.launchPath = @"/usr/bin/python";
     NSLog(@"Running %@:%@ with arguments: %@", scriptPath, functionName, arguments);
     NSString *wrapperPath = [[NSBundle mainBundle] pathForResource:@"wrapper" ofType:@"py"];
-    NSMutableArray* args = [NSMutableArray arrayWithObjects: wrapperPath, scriptPath, functionName, nil];
+    // note that the -u option must be specified to prevent python's built-in buffering
+    NSMutableArray* args = [NSMutableArray arrayWithObjects: @"-u", wrapperPath, scriptPath, functionName, nil];
     [args addObjectsFromArray: arguments];
     task.arguments = args;
     
     // NSLog breaks if we don't do this...
     [task setStandardInput: [NSPipe pipe]];
     
-//    [task setStandardOutput:pipe];
-//    [task setStandardError: pipe];
+    [task setStandardOutput:pipe];
+    [task setStandardError: errorPipe];
     
+    // disable internal buffering
     // http://stackoverflow.com/a/8269886/262455
     NSDictionary *defaultEnvironment = [[NSProcessInfo processInfo] environment];
     NSMutableDictionary *environment = [[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment];
@@ -223,8 +226,6 @@
     [task setEnvironment:environment];
     
     [task launch];
-    
-    //NSData* data = [[stdOutPipe fileHandleForReading] readDataToEndOfFile];
     
     [task waitUntilExit];
     
