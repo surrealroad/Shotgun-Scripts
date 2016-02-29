@@ -131,6 +131,18 @@
         }
         NSURL *folder = [[panel URLs] lastObject];
         [args addObject:[folder path]];
+    } else if ([script valueForKey:@"chooseFile"]) {
+        NSOpenPanel *panel = [NSOpenPanel openPanel];
+        [panel setAllowsMultipleSelection:NO];
+        [panel setCanChooseDirectories:NO];
+        [panel setCanChooseFiles:YES];
+        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
+            [self restoreInterface];
+            return;
+        }
+        NSURL *file = [[panel URLs] lastObject];
+        [args addObject:[file path]];
     }
     
     if ([script valueForKey:@"saveFile"]) {
