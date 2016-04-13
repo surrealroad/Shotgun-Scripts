@@ -182,6 +182,15 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
             });
+        } else if([script valueForKey:@"notifyAfter"]) {
+            NSAlert *alert = [NSAlert new];
+            alert.messageText = @"Complete";
+            alert.informativeText = @"Process is complete";
+            [alert addButtonWithTitle:@"Ok"];
+            
+            [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
+                NSLog(@"Success");
+            }];
         }
         
         [self restoreInterface];
