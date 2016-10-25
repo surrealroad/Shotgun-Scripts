@@ -288,6 +288,11 @@
     if(shouldRun)[self execPythonScript:script];
 }
 
+- (IBAction)copyToClipboard:(id)sender {
+    [[NSPasteboard generalPasteboard] clearContents];
+    [[NSPasteboard generalPasteboard] setString:self.textView.textStorage.string  forType:NSStringPboardType];
+}
+
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event
         withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
     
