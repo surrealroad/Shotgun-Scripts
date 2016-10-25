@@ -114,11 +114,27 @@
     [self.popupButton setEnabled:NO];
     [self.textView setEditable:NO];
     
-    //PythonHandler *pythonHandler = [PythonHandler sharedManager];
     // set arguments
     NSMutableArray *args = [[NSMutableArray alloc] init];
     
+    BOOL chooseFolder = NO;
     if ([script valueForKey:@"chooseFolder"]) {
+        chooseFolder = [[script valueForKey:@"chooseFolder"] boolValue];
+    }
+    BOOL chooseFile = NO;
+    if ([script valueForKey:@"chooseFile"]) {
+        chooseFile = [[script valueForKey:@"chooseFile"] boolValue];
+    }
+    BOOL saveFile = NO;
+    if ([script valueForKey:@"saveFile"]) {
+        saveFile = [[script valueForKey:@"saveFile"] boolValue];
+    }
+    BOOL shouldTerminate = NO;
+    if ([script valueForKey:@"quitAfter"]) {
+        shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
+    }
+    
+    if (chooseFolder) {
         // http://stackoverflow.com/a/10922591/262455
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
@@ -131,7 +147,7 @@
         }
         NSURL *folder = [[panel URLs] lastObject];
         [args addObject:[folder path]];
-    } else if ([script valueForKey:@"chooseFile"]) {
+    } else if (chooseFile) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
         [panel setCanChooseDirectories:NO];
@@ -145,7 +161,7 @@
         [args addObject:[file path]];
     }
     
-    if ([script valueForKey:@"saveFile"]) {
+    if (saveFile) {
         NSDictionary *saveOptions = [script valueForKey:@"saveFile"];
         NSSavePanel *panel = [NSSavePanel savePanel];
         [panel setMessage:@"Choose where to save the file"]; // Message inside modal window
@@ -196,13 +212,7 @@
         [self restoreInterface];
         
         // terminate on completion if needed
-        BOOL shouldTerminate = NO;
-        if ([script valueForKey:@"quitAfter"]) {
-            shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
-        }
-        
         if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
-        //exit(0);
         
     });
 }
