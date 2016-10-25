@@ -90,7 +90,7 @@
 // intercepts stdout
 - (void)handleNotification:(NSNotification*) notification {
     [pipeReadHandle readInBackgroundAndNotify] ;
-    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
+    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
     // Do whatever you want with str
     [self.logger appendLogMessage:str];
 }
@@ -98,7 +98,7 @@
 // intercepts stderr
 - (void)handleErrorNotification:(NSNotification*) notification {
     [errorPipeReadHandle readInBackgroundAndNotify] ;
-    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSASCIIStringEncoding] ;
+    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
     // Do whatever you want with str
     [self.logger appendErrorMessage:str];
 }
