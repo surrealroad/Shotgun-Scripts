@@ -203,10 +203,12 @@
             alert.messageText = @"Complete";
             alert.informativeText = @"Process is complete";
             [alert addButtonWithTitle:@"Ok"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
+                    NSLog(@"Success");
+                }];
+            });
             
-            [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
-                NSLog(@"Success");
-            }];
         }
         
         [self restoreInterface];
