@@ -10,9 +10,9 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "E23EE29F-BE53-4B5C-ABFE-92E34EDF0A38",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "3F1D48BA5A91A8ED0C63B9E01544225F4347BE9C" : "Shotgun-Scripts",
-    "3C687BE5C551DEC085C692823FF1E8E588F357BE" : "Shotgun\/submodules\/shotgun\/python-api",
-    "A76918D4222D75F9022B3681A59D72362AB08E71" : "Shotgun"
+    "3F1D48BA5A91A8ED0C63B9E01544225F4347BE9C" : "Shotgun-Scripts\/",
+    "3C687BE5C551DEC085C692823FF1E8E588F357BE" : "Shotgun\/submodules\/shotgun\/python-api\/",
+    "A76918D4222D75F9022B3681A59D72362AB08E71" : "Shotgun\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Shotgun Scripts",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
