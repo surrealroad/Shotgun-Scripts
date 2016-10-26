@@ -133,6 +133,10 @@
     if ([script valueForKey:@"quitAfter"]) {
         shouldTerminate = [[script valueForKey:@"quitAfter"] boolValue];
     }
+    BOOL notifyAfter = NO;
+    if ([script valueForKey:@"notifyAfter"]) {
+        notifyAfter = [[script valueForKey:@"notifyAfter"] boolValue];
+    }
     
     if (chooseFolder) {
         // http://stackoverflow.com/a/10922591/262455
@@ -198,7 +202,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
             });
-        } else if([script valueForKey:@"notifyAfter"]) {
+        } else if(notifyAfter) {
             NSAlert *alert = [NSAlert new];
             alert.messageText = @"Complete";
             alert.informativeText = @"Process is complete";
