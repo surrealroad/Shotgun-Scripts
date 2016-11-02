@@ -6,7 +6,6 @@ This application provides a convenient way to bundle scripts using the [Shotgun 
 ## Usage
 1. Clone or download the repo
 1. Open in Xcode
-1. Correct the path to the `shotgun_api3` so that it points to a local copy of 
 1. Build for release
 
 ### Adding custom scripts
