@@ -36,3 +36,5 @@ After making changes to the files inside the bundle, the app must be resigned.
 
 ### Action Menu Items
 To use a script as an Action Menu Item (AMI) configure the AMI to use the URL `sgscripts://your_script_name`
+
+A JSON-encoded string will be sent to the script as a parameter.
