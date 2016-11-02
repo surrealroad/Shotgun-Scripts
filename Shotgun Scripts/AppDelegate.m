@@ -10,7 +10,7 @@
 #import "Logger.h"
 #import "NSURL+ParseCategory.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <NSUserNotificationCenterDelegate>
 @property (weak) IBOutlet NSWindow *window;
 // http://stackoverflow.com/a/8958316/262455
 @property (weak) IBOutlet Logger *logger;
@@ -28,6 +28,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 
 }
 
@@ -213,6 +214,13 @@
                 }];
             });
             
+            // send notification center notification
+            NSUserNotification *notification = [[NSUserNotification alloc] init];
+            notification.title = @"Process complete";
+            notification.informativeText = [NSString stringWithFormat:@"%@ has completed",[script valueForKey:@"name"]];
+            notification.soundName = NSUserNotificationDefaultSoundName;
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+            
         }
         
         [self restoreInterface];
@@ -380,6 +388,13 @@
                 return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
             }];
 }
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+     shouldPresentNotification:(NSUserNotification *)notification
+{
+    return YES;
+}
+
 
 // terminate on last window closed
 - (BOOL) applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
