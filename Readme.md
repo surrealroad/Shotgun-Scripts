@@ -37,3 +37,6 @@ After making changes to the files inside the bundle, the app must be resigned.
 To use a script as an Action Menu Item (AMI) configure the AMI to use the URL `sgscripts://your_script_name`
 
 A JSON-encoded string will be sent to the script as a parameter.
+
+### Logging script output
+Any `print` (or other `stdout`) statements will be output to the log window. Any `stderr` output will also be output, but in red text.
