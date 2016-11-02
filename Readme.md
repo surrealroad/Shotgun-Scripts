@@ -1,12 +1,12 @@
 # Shotgun Scripts Launcher
 
 ## Purpose
-This application provides a convenient way to bundle python API scripts for Shotgun, any of which can optionally be used as Action Menu Items.
+This application provides a convenient way to bundle scripts using the [Shotgun Python API](https://github.com/shotgunsoftware/python-api), any of which can optionally be used as Action Menu Items.
 
 ## Usage
 1. Clone or download the repo
 1. Open in Xcode
-1. Correct the path to the `shotgun_api3` so that it points to a local copy of the [Shotgun Python API](https://github.com/shotgunsoftware/python-api)
+1. Correct the path to the `shotgun_api3` so that it points to a local copy of 
 1. Build for release
 
 ### Adding custom scripts
@@ -33,3 +33,6 @@ The plist root should have an array called `scripts`. This array should contain 
 
 ### Resigning
 After making changes to the files inside the bundle, the app must be resigned.
+
+### Action Menu Items
+To use a script as an Action Menu Item (AMI) configure the AMI to use the URL `sgscripts://your_script_name`
