@@ -21,8 +21,14 @@ Custom scripts must have a function called `process_action()`. This will be call
 The plist root should have an array called `scripts`. This array should contain dictionaries for each script. The dictionary can have the following keys:
 
 - `name` (string) - the name of the script, as displayed in the dropdown
-- `description§ (string) - the description of the script, which will be displayed in the window when the script is selected
+- `description` (string) - the description of the script, which will be displayed in the window when the script is selected
 - `filename` (string) - the filename of the script, without the extension
+- `chooseFolder` (bool) - will prompt for a folder when the script runs
+- `chooseFile` (bool) - will prompt for a file when the script runs
+- `saveFile` (bool) - will prompt to save a file when the script runs
+- `quitAfter` (bool) - will quit the app when the script has completed
+- `notifyAfter` (bool) - will show an alert when the script has completed
+- `arguments` (array) - additional array arguments to send to the script
 
 
 ### Resigning
