@@ -220,6 +220,7 @@
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
         [panel setCanChooseDirectories:YES];
+        [panel setCanCreateDirectories:YES];
         [panel setCanChooseFiles:NO];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
@@ -232,6 +233,7 @@
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
         [panel setCanChooseDirectories:NO];
+        [panel setCanChooseDirectories:YES];
         [panel setCanChooseFiles:YES];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
