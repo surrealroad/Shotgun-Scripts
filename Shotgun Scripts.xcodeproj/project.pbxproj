@@ -15,7 +15,6 @@
 		049325251B4EA84800618482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049325241B4EA84800618482 /* Images.xcassets */; };
 		049325341B4EA84900618482 /* Shotgun_ScriptsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */; };
 		049325441B4EA89D00618482 /* Logger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0493253E1B4EA89D00618482 /* Logger.m */; };
-		049325451B4EA89D00618482 /* scripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0493253F1B4EA89D00618482 /* scripts.plist */; };
 		049325481B4EA89D00618482 /* shotgun_api3 in Resources */ = {isa = PBXBuildFile; fileRef = 049325431B4EA89D00618482 /* shotgun_api3 */; };
 		04968E881B501E8D002CEC88 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 04968E871B501E8D002CEC88 /* icon.icns */; };
 		04BAD58F1DCB5AE400110DBC /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 04BAD58E1DCB5AE400110DBC /* Scripts */; };
@@ -48,7 +47,6 @@
 		049325331B4EA84900618482 /* Shotgun_ScriptsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shotgun_ScriptsTests.m; sourceTree = "<group>"; };
 		0493253D1B4EA89D00618482 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../Logger.h; sourceTree = "<group>"; };
 		0493253E1B4EA89D00618482 /* Logger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Logger.m; path = ../Logger.m; sourceTree = "<group>"; };
-		0493253F1B4EA89D00618482 /* scripts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = scripts.plist; path = ../scripts.plist; sourceTree = "<group>"; };
 		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = ../API/shotgun_api3; sourceTree = "<group>"; };
 		04968E871B501E8D002CEC88 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		04BAD58E1DCB5AE400110DBC /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 				0493253D1B4EA89D00618482 /* Logger.h */,
 				0493253E1B4EA89D00618482 /* Logger.m */,
 				04E950CA1B4FC4B000D8276C /* wrapper.py */,
-				049325491B4EA8CB00618482 /* Plugins */,
 				049325241B4EA84800618482 /* Images.xcassets */,
 				045E23861B7CED2900EAC3B7 /* MainMenu.xib */,
 				0493251D1B4EA84800618482 /* Supporting Files */,
@@ -139,14 +136,6 @@
 				049325321B4EA84900618482 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		049325491B4EA8CB00618482 /* Plugins */ = {
-			isa = PBXGroup;
-			children = (
-				0493253F1B4EA89D00618482 /* scripts.plist */,
-			);
-			name = Plugins;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +222,6 @@
 			files = (
 				045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */,
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
-				049325451B4EA89D00618482 /* scripts.plist in Resources */,
 				04BAD58F1DCB5AE400110DBC /* Scripts in Resources */,
 				04968E881B501E8D002CEC88 /* icon.icns in Resources */,
 				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
