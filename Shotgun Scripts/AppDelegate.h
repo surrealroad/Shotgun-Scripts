@@ -11,7 +11,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     NSPipe *pipe, *errorPipe;
     NSFileHandle *pipeReadHandle, *errorPipeReadHandle;
-    NSArray *scripts;
+    NSMutableArray *scripts;
 }
 
 - (void)handleNotification:(NSNotification*) notification;

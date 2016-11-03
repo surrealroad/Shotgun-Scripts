@@ -18,6 +18,7 @@
 		049325451B4EA89D00618482 /* scripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0493253F1B4EA89D00618482 /* scripts.plist */; };
 		049325481B4EA89D00618482 /* shotgun_api3 in Resources */ = {isa = PBXBuildFile; fileRef = 049325431B4EA89D00618482 /* shotgun_api3 */; };
 		04968E881B501E8D002CEC88 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 04968E871B501E8D002CEC88 /* icon.icns */; };
+		04BAD58F1DCB5AE400110DBC /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 04BAD58E1DCB5AE400110DBC /* Scripts */; };
 		04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */ = {isa = PBXBuildFile; fileRef = 04E950CA1B4FC4B000D8276C /* wrapper.py */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		0493253F1B4EA89D00618482 /* scripts.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = scripts.plist; path = ../scripts.plist; sourceTree = "<group>"; };
 		049325431B4EA89D00618482 /* shotgun_api3 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shotgun_api3; path = ../API/shotgun_api3; sourceTree = "<group>"; };
 		04968E871B501E8D002CEC88 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		04BAD58E1DCB5AE400110DBC /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Scripts; sourceTree = "<group>"; };
 		04E7392E1B7CF5A600674BDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		04E950CA1B4FC4B000D8276C /* wrapper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wrapper.py; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 		0493251D1B4EA84800618482 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				04BAD58E1DCB5AE400110DBC /* Scripts */,
 				04968E871B501E8D002CEC88 /* icon.icns */,
 				049325431B4EA89D00618482 /* shotgun_api3 */,
 				0493251E1B4EA84800618482 /* Info.plist */,
@@ -231,6 +234,7 @@
 				045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */,
 				049325251B4EA84800618482 /* Images.xcassets in Resources */,
 				049325451B4EA89D00618482 /* scripts.plist in Resources */,
+				04BAD58F1DCB5AE400110DBC /* Scripts in Resources */,
 				04968E881B501E8D002CEC88 /* icon.icns in Resources */,
 				049325481B4EA89D00618482 /* shotgun_api3 in Resources */,
 				04E950CB1B4FC4B000D8276C /* wrapper.py in Resources */,

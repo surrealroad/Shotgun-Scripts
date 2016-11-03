@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.m
 //  SGAPI Test
 //
@@ -57,16 +57,89 @@
     
     if(scripts == nil) {
         // load from plist
-        NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
-        //NSLog(@"plist = %@", plist);
-        scripts = [plist objectForKey:@"scripts"];
-        //NSLog(@"%lu", (unsigned long)[scripts count]);
+        NSDictionary *plist = nil; //[NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
+        if(plist){
+            //NSLog(@"plist = %@", plist);
+            scripts = [plist objectForKey:@"scripts"];
+        } else {
+            scripts = [[NSMutableArray alloc] init];
+            // read info from files
+            NSError *error = nil;
+            NSString *scriptsPath = [[NSBundle mainBundle] pathForResource:@"Scripts" ofType:nil];
+            NSArray *scriptfiles =  [[NSFileManager defaultManager] contentsOfDirectoryAtPath:scriptsPath error: &error];
+            
+            // get files from scripts subfolder
+            for (id scriptfile in scriptfiles) {
+                if([[scriptfile pathExtension]  isEqual: @"py"]) {
+                    NSString *scriptPath = [scriptsPath stringByAppendingPathComponent:scriptfile];
+                    //NSLog(@"%@", scriptPath);
+                    // parse the file for settings
+                    NSString *scriptContents = [NSString stringWithContentsOfFile:scriptPath encoding:NSUTF8StringEncoding error:nil];
+                    if (scriptContents) {
+                        //NSLog(@"%@", scriptContents);
+                        NSString *scriptName = [self getDataFromSourceString:scriptContents afterString:@"@SGS_NAME:"];
+                        if (scriptName) {
+                            // Appears to be valid, get all other options and add to array
+                            NSMutableDictionary *parsedScript = [[NSMutableDictionary alloc]
+                                    initWithObjectsAndKeys:
+                                       scriptPath, @"fullpath",
+                                       [[scriptPath lastPathComponent] stringByDeletingPathExtension], @"filename",
+                                       scriptName, @"name",
+                                       [self getDataFromSourceString:scriptContents afterString:@"@SGS_DESCRIPTION:"], @"description",
+                                    nil
+                            ];
+                            NSString *chooseFolderString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_CHOOSEFOLDER:"];
+                            if (chooseFolderString) {
+                                [parsedScript setObject:chooseFolderString forKey:@"chooseFolder"];
+                            }
+                            NSString *chooseFileString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_CHOOSEFILE:"];
+                            if (chooseFileString) {
+                                [parsedScript setObject:chooseFileString forKey:@"chooseFile"];
+                            }
+                            NSString *saveFileString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_SAVEFILE:"];
+                            if (saveFileString) {
+                                [parsedScript setObject:saveFileString forKey:@"saveFile"];
+                            }
+                            NSString *quitAfterString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_QUITAFTER:"];
+                            if (quitAfterString) {
+                                [parsedScript setObject:quitAfterString forKey:@"quitAfter"];
+                            }
+                            NSString *notifyAfterString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_NOTIFYAFTER:"];
+                            if (notifyAfterString) {
+                                [parsedScript setObject:notifyAfterString forKey:@"notifyAfter"];
+                            }
+                            NSString *visibleString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_VISIBLE:"];
+                            if (visibleString) {
+                                [parsedScript setObject:visibleString forKey:@"visible"];
+                            }
+                            
+                            [scripts addObject: parsedScript];
+                            //NSLog(@"%@", parsedScript);
+                            
+                        } else {
+                            NSLog(@"Skipping invalid or incorrectly formatted script %@", scriptName);
+                        }
+                    }
+                } else {
+                    NSLog(@"Skipping %@", scriptfile);
+                }
+            }
+            
+        }
     }
+    
+    NSLog(@"%lu", (unsigned long)[scripts count]);
         
     // populate controller array with items
     for (id script in scripts) {
-        // add full path to script dict
-        NSString *path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+        NSLog(@"%@", script);
+        // add full path to script dict if it is missing
+        NSString *path;
+        if([script valueForKey:@"fullpath"]) {
+            path = [script valueForKey:@"fullpath"];
+        } else {
+            path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+        }
         // default function name
         if(![script valueForKey:@"function"]) [script setValue:@"process_action" forKey:@"function"];
         BOOL shouldDisplay = YES;
@@ -77,9 +150,12 @@
         if(path && shouldDisplay) {
             NSLog(@"Adding script %@", [script valueForKey:@"name"]);
             [script setObject:path forKey:@"filepath"];
+            NSString *description = [script valueForKey:@"description"];
+            if (!description) description = @"";
+            
             [self.controller addObject:@{
                                          @"name" :[script valueForKey:@"name"],
-                                         @"description":[script valueForKey:@"description"],
+                                         @"description":description,
                                          @"script":script,
                                          }];
         }
@@ -387,6 +463,28 @@
             ^BOOL(id dictionary, NSUInteger idx, BOOL *stop) {
                 return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
             }];
+}
+
+
+// http://stackoverflow.com/a/594867/262455
+- (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData;
+{
+    NSInteger left, right;
+    NSString *foundData;
+    if ([data rangeOfString:leftData].location != NSNotFound) {
+        NSScanner *scanner=[NSScanner scannerWithString:data];
+        while ([scanner isAtEnd] == NO) {
+            [scanner scanUpToString:leftData intoString: nil];
+            left = [scanner scanLocation];
+            [scanner setScanLocation:left + [leftData length]];
+            [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil];
+            right = [scanner scanLocation] + 1;
+            left += [leftData length];
+            foundData = [data substringWithRange: NSMakeRange(left, (right - left) - 1)];
+            return [foundData stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        }
+    }
+    return nil;
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
