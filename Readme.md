@@ -37,6 +37,7 @@ Explanation of each:
 - `SGS_VISIBLE` (bool) - will hide the script from the dropdown (it can only be activated as an AMI)
 
 Custom scripts must have a function called `process_action()`. This will be called when the script is executed, and passed with any parameters in the following order (in the event you provide more than one):
+
 1. Path to user-selected folder
 1. Path to user-selected file
 1. Path to user-selected file to create
