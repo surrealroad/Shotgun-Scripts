@@ -82,7 +82,7 @@
                             // Appears to be valid, get all other options and add to array
                             NSMutableDictionary *parsedScript = [[NSMutableDictionary alloc]
                                     initWithObjectsAndKeys:
-                                       scriptPath, @"fullpath",
+                                       scriptPath, @"filepath",
                                        [[scriptPath lastPathComponent] stringByDeletingPathExtension], @"filename",
                                        scriptName, @"name",
                                        [self getDataFromSourceString:scriptContents afterString:@"@SGS_DESCRIPTION:"], @"description",
@@ -135,8 +135,8 @@
         NSLog(@"%@", script);
         // add full path to script dict if it is missing
         NSString *path;
-        if([script valueForKey:@"fullpath"]) {
-            path = [script valueForKey:@"fullpath"];
+        if([script valueForKey:@"filepath"]) {
+            path = [script valueForKey:@"filepath"];
         } else {
             path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
         }
@@ -443,8 +443,13 @@
         NSMutableDictionary *script = scripts[scriptIndex];
         
         // add full path to script dict
-        NSString *path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
-        [script setObject:path forKey:@"filepath"];
+        NSString *path = @"";
+        if([script valueForKey:@"filepath"]) {
+            path = [script valueForKey:@"filepath"];
+        } else {
+            path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+            [script setObject:path forKey:@"filepath"];
+        }
         
         // set arguments (there's probably a cleaner way to do this)
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];
