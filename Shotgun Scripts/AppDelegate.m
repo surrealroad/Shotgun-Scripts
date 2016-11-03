@@ -215,6 +215,9 @@
         notifyAfter = [[script valueForKey:@"notifyAfter"] boolValue];
     }
     
+    NSString *resultPath = @"";
+    NSURL *resultURL = nil;
+    
     if (chooseFolder) {
         // http://stackoverflow.com/a/10922591/262455
         NSOpenPanel *panel = [NSOpenPanel openPanel];
@@ -227,8 +230,9 @@
             [self restoreInterface];
             return;
         }
-        NSURL *folder = [[panel URLs] lastObject];
-        [args addObject:[folder path]];
+        NSURL *resultURL = [[panel URLs] lastObject];
+        resultPath = [resultURL path];
+        [args addObject:resultPath];
     } else if (chooseFile) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
@@ -240,8 +244,9 @@
             [self restoreInterface];
             return;
         }
-        NSURL *file = [[panel URLs] lastObject];
-        [args addObject:[file path]];
+        NSURL *resultURL = [[panel URLs] lastObject];
+        resultPath = [resultURL path];
+        [args addObject:resultPath];
     }
     
     if (saveFile) {
@@ -262,8 +267,9 @@
             [self restoreInterface];
             return;
         }
-        NSURL *folder = [panel URL];
-        [args addObject:[folder path]];
+        NSURL *resultURL = [panel URL];
+        resultPath = [resultURL path];
+        [args addObject:resultPath];
     }
     
     if ([script valueForKey:@"arguments"]) {
@@ -286,8 +292,17 @@
             alert.messageText = @"Complete";
             alert.informativeText = @"Process is complete";
             [alert addButtonWithTitle:@"Ok"];
+            if(chooseFolder) {
+                [alert addButtonWithTitle:@"Open Folder"];
+            } else if (chooseFile || saveFile) {
+                [alert addButtonWithTitle:@"Open Location"];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
+                    if(result == NSAlertSecondButtonReturn) {
+                        if(chooseFolder) [[NSWorkspace sharedWorkspace]openFile:resultPath withApplication:@"Finder"];
+                        else [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ resultURL ]];
+                    }
                     NSLog(@"Success");
                 }];
             });
