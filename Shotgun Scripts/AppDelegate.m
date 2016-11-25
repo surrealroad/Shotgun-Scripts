@@ -49,11 +49,18 @@
 }
 
 - (void) awakeFromNib {
-    // set up progress
-    [self.circularProgress startAnimation:nil];
-    [self.circularProgress setHidden:YES];
-    [self.circularProgress setIndeterminate:YES];
-    [self.circularProgress setUsesThreadedAnimation:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // set up progress
+        [self.circularProgress startAnimation:nil];
+        [self.circularProgress setHidden:YES];
+        [self.circularProgress setIndeterminate:YES];
+        [self.circularProgress setUsesThreadedAnimation:YES];
+        
+        // disable buttons/fields
+        [self.runButton setEnabled:NO];
+        [self.popupButton setEnabled:NO];
+        [self.textView setEditable:NO];
+    });
     
     if(scripts == nil) {
         // load from plist
@@ -129,7 +136,14 @@
     }
     
     NSLog(@"%lu", (unsigned long)[scripts count]);
-        
+    
+    [self resetScriptMenu];
+    }
+
+// reset script selector
+- (void)resetScriptMenu {
+    // remove any existing items
+    [self.controller setContent:nil];
     // populate controller array with items
     for (id script in scripts) {
         NSLog(@"%@", script);
@@ -162,6 +176,7 @@
     }
     // reset options to first in list
     [self.controller setSelectionIndex:0];
+    [self restoreInterface];
 }
 
 // intercepts stdout
@@ -183,13 +198,6 @@
 - (void)execPythonScript:(NSDictionary*) script {
     // runs the script's process_action()
     [self.logger appendLogMessage:[NSString stringWithFormat:@"Running %@\n",[script valueForKey:@"name"]]];
-    // start progress indicator
-    [self.circularProgress setHidden:NO];
-    
-    // disable buttons/fields
-    [self.runButton setEnabled:NO];
-    [self.popupButton setEnabled:NO];
-    [self.textView setEditable:NO];
     
     // set arguments
     NSMutableArray *args = [[NSMutableArray alloc] init];
@@ -275,6 +283,16 @@
     if ([script valueForKey:@"arguments"]) {
         [args addObjectsFromArray:[script valueForKey:@"arguments"]];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // start progress indicator
+        [self.circularProgress setHidden:NO];
+        
+        // disable buttons/fields
+        [self.runButton setEnabled:NO];
+        [self.popupButton setEnabled:NO];
+        [self.textView setEditable:NO];
+    });
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
@@ -388,26 +406,39 @@
         // stop progress indicator
         [self.circularProgress setHidden:YES];
         // enable buttons/fields
-        [self.runButton setEnabled:YES];
-        [self.popupButton setEnabled:YES];
-        [self.textView setEditable:YES];
+        if (self.controller.selectedObjects && self.controller.selectedObjects.count) {
+            NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
+            if (script) {
+                [self.runButton setEnabled:[[script valueForKey:@"visible"] boolValue]];
+                [self.popupButton setEnabled:YES];
+                [self.textView setEditable:YES];
+            }
+        }
     });
 }
 
 - (IBAction)runScript:(id)sender {
-    NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
-    
-    // don't allow running of hidden scripts via button
-    BOOL shouldRun = YES;
-    if ([script valueForKey:@"visible"]) {
-        shouldRun = [[script valueForKey:@"visible"] boolValue];
+    if (self.controller.selectedObjects && self.controller.selectedObjects.count) {
+        NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
+        
+        // don't allow running of hidden scripts via button
+        BOOL shouldRun = YES;
+        if (!script) {
+            shouldRun = NO;
+        } else if ([script valueForKey:@"visible"]) {
+            shouldRun = [[script valueForKey:@"visible"] boolValue];
+        }
+        if(shouldRun)[self execPythonScript:script];
     }
-    if(shouldRun)[self execPythonScript:script];
 }
 
 - (IBAction)copyToClipboard:(id)sender {
     [[NSPasteboard generalPasteboard] clearContents];
     [[NSPasteboard generalPasteboard] setString:self.textView.textStorage.string  forType:NSStringPboardType];
+}
+
+- (IBAction)changePopupButton:(id)sender {
+    [self restoreInterface];
 }
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event
@@ -464,14 +495,14 @@
         [script setObject:args forKey:@"arguments"];
         
         // make the controller display the correct info
-        // remove all other options
-        [self.controller setContent:@{
+        [self resetScriptMenu];
+        // append current script
+        [self.controller addObject:@{
                                      @"name" :[script valueForKey:@"name"],
                                      @"description":[script valueForKey:@"description"],
                                      @"script":script,
                                      }];
-        // reset options to first in list
-        [self.controller setSelectionIndex:0];
+        // this script should be selected automatically
         [self execPythonScript:script];
         // reset arguments
         if(oldargs) [script setObject:oldargs forKey:@"arguments"];
