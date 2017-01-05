@@ -20,6 +20,11 @@
 @property (weak) IBOutlet NSButton *runButton;
 @property (weak) IBOutlet NSPopUpButton *popupButton;
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
+@property (weak) IBOutlet NSTextField *shotgunURLField;
+@property (weak) IBOutlet NSTextField *shotgunUsernameField;
+@property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
+
+@property (weak) IBOutlet NSPanel *preferencesPanel;
 
 
 @end
@@ -516,6 +521,20 @@
             ^BOOL(id dictionary, NSUInteger idx, BOOL *stop) {
                 return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
             }];
+}
+
+// http://stackoverflow.com/questions/8058653/displaying-a-cocoa-window-as-a-sheet-in-xcode-4-osx-10-7-2-with-arc
+- (IBAction)showPreferences:(id)sender {
+    [self.window beginSheet: self.preferencesPanel
+       completionHandler:^(NSModalResponse returnCode) {
+           [NSApp stopModalWithCode: returnCode];
+       }];
+    
+    [NSApp runModalForWindow: self.preferencesPanel];
+}
+
+-(IBAction)closePreferences:(id)sender {
+    [self.window endSheet: self.preferencesPanel];
 }
 
 
