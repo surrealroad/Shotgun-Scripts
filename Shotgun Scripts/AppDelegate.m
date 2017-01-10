@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Logger.h"
 #import "NSURL+ParseCategory.h"
+#import <Security/Security.h>
 
 @interface AppDelegate () <NSUserNotificationCenterDelegate>
 @property (weak) IBOutlet NSWindow *window;
@@ -22,9 +23,9 @@
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSTextField *shotgunURLField;
 @property (weak) IBOutlet NSTextField *shotgunUsernameField;
-@property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
-
 @property (weak) IBOutlet NSPanel *preferencesPanel;
+@property (weak) IBOutlet NSPanel *passwordPanel;
+@property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
 
 
 @end
@@ -34,7 +35,6 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
-
 }
 
 // http://stackoverflow.com/a/1991162/262455
@@ -145,44 +145,8 @@
     [self resetScriptMenu];
     }
 
-// reset script selector
-- (void)resetScriptMenu {
-    // remove any existing items
-    [self.controller setContent:nil];
-    // populate controller array with items
-    for (id script in scripts) {
-        NSLog(@"%@", script);
-        // add full path to script dict if it is missing
-        NSString *path;
-        if([script valueForKey:@"filepath"]) {
-            path = [script valueForKey:@"filepath"];
-        } else {
-            path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
-        }
-        // default function name
-        if(![script valueForKey:@"function"]) [script setValue:@"process_action" forKey:@"function"];
-        BOOL shouldDisplay = YES;
-        if([script valueForKey:@"visible"]) {
-            shouldDisplay = [[script valueForKey:@"visible"] boolValue];
-            if(!shouldDisplay) NSLog(@"Skipping hidden script %@", [script valueForKey:@"name"]);
-        }
-        if(path && shouldDisplay) {
-            NSLog(@"Adding script %@", [script valueForKey:@"name"]);
-            [script setObject:path forKey:@"filepath"];
-            NSString *description = [script valueForKey:@"description"];
-            if (!description) description = @"";
-            
-            [self.controller addObject:@{
-                                         @"name" :[script valueForKey:@"name"],
-                                         @"description":description,
-                                         @"script":script,
-                                         }];
-        }
-    }
-    // reset options to first in list
-    [self.controller setSelectionIndex:0];
-    [self restoreInterface];
-}
+
+#pragma mark - Message piping
 
 // intercepts stdout
 - (void)handleNotification:(NSNotification*) notification {
@@ -199,6 +163,8 @@
     // Do whatever you want with str
     [self.logger appendErrorMessage:str];
 }
+
+#pragma mark - Script execution
 
 - (void)execPythonScript:(NSDictionary*) script {
     // runs the script's process_action()
@@ -227,6 +193,54 @@
     if ([script valueForKey:@"notifyAfter"]) {
         notifyAfter = [[script valueForKey:@"notifyAfter"] boolValue];
     }
+    
+    // get a username and password, if required
+    // https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/03tasks/tasks.html#//apple_ref/doc/uid/TP30000897-CH205-BCIHAAGG
+    // Fetch password
+    NSURL *sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
+    NSString *sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+    if(!sgURL || !sgUsername) {
+        // prompt for site / username
+        [self showPreferencesPanel];
+        sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
+        sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+        if(!sgURL || !sgUsername) {
+            NSAlert *alertSheet = [NSAlert alertWithMessageText:@"Cannot connect to Shotgun" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This script cannot run without a valid Shotgun URL and username."];
+            [alertSheet beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:nil contextInfo:nil];
+            [self.logger appendErrorMessage:@"Missing site credentials\n"];
+            [self restoreInterface];
+            
+            // terminate on completion if needed
+            if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
+            return;
+        }
+    }
+    NSString *sgPassword = @"";
+    if(sgURL != nil && sgUsername != nil) {
+        sgPassword = [self getKeychainPasswordForURL:sgURL username:sgUsername];
+        
+        
+        //        char *inputpassword = "topsecret";
+        //        UInt32 inputpassLength = strlen(inputpassword);
+        //        status = SecKeychainAddInternetPassword(
+        //                                                NULL,
+        //                                                strlen(urlString),
+        //                                                urlString,
+        //                                                0,
+        //                                                NULL,
+        //                                                strlen(userString),
+        //                                                userString,
+        //                                                0,
+        //                                                nil,
+        //                                                0,
+        //                                                kSecProtocolTypeHTTPS,
+        //                                                kSecAuthenticationTypeDefault,
+        //                                                inputpassLength,
+        //                                                inputpassword,
+        //                                                NULL
+        //                                                );
+    }
+    
     
     NSString *resultPath = @"";
     NSURL *resultURL = nil;
@@ -406,6 +420,8 @@
     return YES;
 }
 
+#pragma mark - Interface methods
+
 - (void)restoreInterface {
     dispatch_async(dispatch_get_main_queue(), ^{
         // stop progress indicator
@@ -420,6 +436,45 @@
             }
         }
     });
+}
+
+// reset script selector
+- (void)resetScriptMenu {
+    // remove any existing items
+    [self.controller setContent:nil];
+    // populate controller array with items
+    for (id script in scripts) {
+        NSLog(@"%@", script);
+        // add full path to script dict if it is missing
+        NSString *path;
+        if([script valueForKey:@"filepath"]) {
+            path = [script valueForKey:@"filepath"];
+        } else {
+            path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
+        }
+        // default function name
+        if(![script valueForKey:@"function"]) [script setValue:@"process_action" forKey:@"function"];
+        BOOL shouldDisplay = YES;
+        if([script valueForKey:@"visible"]) {
+            shouldDisplay = [[script valueForKey:@"visible"] boolValue];
+            if(!shouldDisplay) NSLog(@"Skipping hidden script %@", [script valueForKey:@"name"]);
+        }
+        if(path && shouldDisplay) {
+            NSLog(@"Adding script %@", [script valueForKey:@"name"]);
+            [script setObject:path forKey:@"filepath"];
+            NSString *description = [script valueForKey:@"description"];
+            if (!description) description = @"";
+            
+            [self.controller addObject:@{
+                                         @"name" :[script valueForKey:@"name"],
+                                         @"description":description,
+                                         @"script":script,
+                                         }];
+        }
+    }
+    // reset options to first in list
+    [self.controller setSelectionIndex:0];
+    [self restoreInterface];
 }
 
 - (IBAction)runScript:(id)sender {
@@ -445,6 +500,79 @@
 - (IBAction)changePopupButton:(id)sender {
     [self restoreInterface];
 }
+
+// http://stackoverflow.com/questions/8058653/displaying-a-cocoa-window-as-a-sheet-in-xcode-4-osx-10-7-2-with-arc
+- (IBAction)showPreferences:(id)sender {
+    [self showPreferencesPanel];
+}
+
+- (void)showPreferencesPanel {
+    [self.window beginSheet: self.preferencesPanel
+          completionHandler:^(NSModalResponse returnCode) {
+              [NSApp stopModalWithCode: returnCode];
+          }];
+    
+    [NSApp runModalForWindow: self.preferencesPanel];
+}
+
+- (void)showPasswordPanel {
+    [self.window beginSheet: self.passwordPanel
+          completionHandler:^(NSModalResponse returnCode) {
+              [NSApp stopModalWithCode: returnCode];
+          }];
+    
+    [NSApp runModalForWindow: self.passwordPanel];
+}
+
+-(IBAction)closePreferences:(id)sender {
+    NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+    [controller save:self];
+    [self.window endSheet: self.preferencesPanel];
+}
+
+- (IBAction)closePassword:(id)sender {
+    [self.window endSheet: self.passwordPanel];
+}
+
+
+#pragma mark - Keychain handling
+
+-(NSString *)getKeychainPasswordForURL:(NSURL *)url username:(NSString *)username {
+    // I have tried and tried to make this work with iCloud but it is not worth the hassle
+    NSLog(@"Looking for %@ @ %@", username, [url host]);
+    // http://stackoverflow.com/a/13532428/262455
+    OSStatus status;
+    
+    UInt32 returnpasswordLength = 0;
+    char *passwordData;
+    
+    status = SecKeychainFindInternetPassword(
+                                             NULL,
+                                             (int)[[url host] length],
+                                             (char *)[[url host] UTF8String],
+                                             0,
+                                             NULL,
+                                             (int)[username length],
+                                             (char *)[username UTF8String],
+                                             0,
+                                             nil,
+                                             0,
+                                             kSecProtocolTypeHTTPS, // TODO
+                                             kSecAuthenticationTypeDefault,
+                                             &returnpasswordLength,
+                                             (void *)&passwordData,
+                                             NULL
+                                             );
+    
+    NSLog(@"Retrieving status:%@", SecCopyErrorMessageString(status, NULL));
+    
+    NSString *password = [[NSString alloc] initWithBytes:passwordData
+                                          length:returnpasswordLength
+                                        encoding:NSUTF8StringEncoding];
+    return password;
+}
+    
+#pragma mark - Action Menu Item handling
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event
         withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
@@ -521,20 +649,6 @@
             ^BOOL(id dictionary, NSUInteger idx, BOOL *stop) {
                 return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
             }];
-}
-
-// http://stackoverflow.com/questions/8058653/displaying-a-cocoa-window-as-a-sheet-in-xcode-4-osx-10-7-2-with-arc
-- (IBAction)showPreferences:(id)sender {
-    [self.window beginSheet: self.preferencesPanel
-       completionHandler:^(NSModalResponse returnCode) {
-           [NSApp stopModalWithCode: returnCode];
-       }];
-    
-    [NSApp runModalForWindow: self.preferencesPanel];
-}
-
--(IBAction)closePreferences:(id)sender {
-    [self.window endSheet: self.preferencesPanel];
 }
 
 
