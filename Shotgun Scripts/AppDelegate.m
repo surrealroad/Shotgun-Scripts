@@ -218,6 +218,7 @@
     NSString *sgPassword = @"";
     if(sgURL != nil && sgUsername != nil) {
         sgPassword = [self getKeychainPasswordForURL:sgURL username:sgUsername];
+        [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  [sgURL host]]];
         
         
         //        char *inputpassword = "topsecret";
@@ -241,7 +242,6 @@
         //                                                );
     }
     
-    
     NSString *resultPath = @"";
     NSURL *resultURL = nil;
     
@@ -253,7 +253,7 @@
         [panel setCanCreateDirectories:YES];
         [panel setCanChooseFiles:NO];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
-            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
+            [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             [self restoreInterface];
             return;
         }
@@ -267,7 +267,7 @@
         [panel setCanChooseDirectories:YES];
         [panel setCanChooseFiles:YES];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
-            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
+            [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             [self restoreInterface];
             return;
         }
@@ -290,7 +290,7 @@
         [panel setTitle:@"Save file as"]; // Window title
         
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
-            [self.logger appendLogMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
+            [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             [self restoreInterface];
             return;
         }
