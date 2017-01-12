@@ -64,7 +64,7 @@
     
     if(scripts == nil) {
         // load from plist
-        NSDictionary *plist = nil; //[NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
+        NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
         if(plist){
             //NSLog(@"plist = %@", plist);
             scripts = [plist objectForKey:@"scripts"];
