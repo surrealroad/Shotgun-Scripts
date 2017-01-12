@@ -166,11 +166,9 @@
 
 #pragma mark - Script execution
 
-- (void)execPythonScript:(NSDictionary*) script {
-    // runs the script's process_action()
-    [self.logger appendLogMessage:[NSString stringWithFormat:@"Running %@\n",[script valueForKey:@"name"]]];
-    
-    // set arguments
+- (NSDictionary *)getConfigurationForScriptExecution:(NSDictionary*) script {
+    // return a dictionary containing arguments and other session-specific data
+
     NSMutableArray *args = [[NSMutableArray alloc] init];
     
     BOOL chooseFolder = NO;
@@ -209,10 +207,6 @@
             [alertSheet beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:nil contextInfo:nil];
             [self.logger appendErrorMessage:@"Missing site credentials\n"];
             [self restoreInterface];
-            
-            // terminate on completion if needed
-            if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
-            return;
         }
     }
     NSString *sgPassword = @"";
@@ -254,12 +248,12 @@
         [panel setCanChooseFiles:NO];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
-            [self restoreInterface];
-            return;
+            return Nil;
         }
-        NSURL *resultURL = [[panel URLs] lastObject];
+        resultURL = [[panel URLs] lastObject];
         resultPath = [resultURL path];
         [args addObject:resultPath];
+        
     } else if (chooseFile) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setAllowsMultipleSelection:NO];
@@ -268,10 +262,9 @@
         [panel setCanChooseFiles:YES];
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
-            [self restoreInterface];
-            return;
+            return Nil;
         }
-        NSURL *resultURL = [[panel URLs] lastObject];
+        resultURL = [[panel URLs] lastObject];
         resultPath = [resultURL path];
         [args addObject:resultPath];
     }
@@ -291,8 +284,7 @@
         
         if ([panel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
-            [self restoreInterface];
-            return;
+            return Nil;
         }
         NSURL *resultURL = [panel URL];
         resultPath = [resultURL path];
@@ -302,6 +294,30 @@
     if ([script valueForKey:@"arguments"]) {
         [args addObjectsFromArray:[script valueForKey:@"arguments"]];
     }
+    
+    NSDictionary *config = @{@"arguments":args,
+                             @"resultURL":resultURL,
+                             @"chooseFolder":[NSNumber numberWithBool:chooseFolder],
+                             @"chooseFile":[NSNumber numberWithBool:chooseFile],
+                             @"saveFile":[NSNumber numberWithBool:saveFile],
+                             @"shouldTerminate":[NSNumber numberWithBool:shouldTerminate],
+                             @"notifyAfter":[NSNumber numberWithBool:notifyAfter],
+                             };
+    
+    return config;
+}
+
+- (void)execPythonScript:(NSDictionary*) script {
+    // runs the script's process_action()
+    [self.logger appendLogMessage:[NSString stringWithFormat:@"Running %@\n",[script valueForKey:@"name"]]];
+    
+    // get arguments
+    NSDictionary *config = [self getConfigurationForScriptExecution:script];
+    if(!config) {
+        [self restoreInterface];
+        return;
+    }
+    NSArray *args = [config valueForKey:@"arguments"];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         // start progress indicator
@@ -314,7 +330,6 @@
     });
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    
         BOOL success = [self runPythonScript:[script valueForKey:@"filepath"]
                                  runFunction:[script valueForKey:@"function"]
                                withArguments:args];
@@ -324,21 +339,21 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSRunAlertPanel(@"Script Failed", @"The script could not be completed.", nil, nil, nil);
             });
-        } else if(notifyAfter) {
+        } else if([[config valueForKey:@"notifyAfter"] boolValue]) {
             NSAlert *alert = [NSAlert new];
             alert.messageText = @"Complete";
             alert.informativeText = @"Process is complete";
             [alert addButtonWithTitle:@"Ok"];
-            if(chooseFolder) {
+            if([[config valueForKey:@"chooseFolder"] boolValue]) {
                 [alert addButtonWithTitle:@"Open Folder"];
-            } else if (chooseFile || saveFile) {
+            } else if ([[config valueForKey:@"chooseFile"] boolValue] || [[config valueForKey:@"saveFile"] boolValue]) {
                 [alert addButtonWithTitle:@"Open Location"];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
                     if(result == NSAlertSecondButtonReturn) {
-                        if(chooseFolder) [[NSWorkspace sharedWorkspace]openFile:resultPath withApplication:@"Finder"];
-                        else [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ resultURL ]];
+                        if([[config valueForKey:@"chooseFolder"] boolValue]) [[NSWorkspace sharedWorkspace]openFile:[[config valueForKey:@"resultURL"] path] withApplication:@"Finder"];
+                        else [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ [config valueForKey:@"resultURL"] ]];
                     }
                     NSLog(@"Success");
                 }];
@@ -356,7 +371,7 @@
         [self restoreInterface];
         
         // terminate on completion if needed
-        if(shouldTerminate) [[NSApplication sharedApplication] terminate:nil];
+        if([[config valueForKey:@"shouldTerminate"] boolValue]) [[NSApplication sharedApplication] terminate:nil];
         
     });
 }
@@ -369,7 +384,7 @@
     function ¬
     additional arguments
  */
-- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments {
+- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSArray*)arguments {
     // Set up piping for stdout
     // http://stackoverflow.com/a/2590723/262455
     pipe = [NSPipe pipe] ;
@@ -653,7 +668,7 @@
 
 
 // http://stackoverflow.com/a/594867/262455
-- (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData;
+- (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData
 {
     NSInteger left, right;
     NSString *foundData;

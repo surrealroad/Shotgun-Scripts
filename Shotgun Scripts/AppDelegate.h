@@ -16,8 +16,13 @@
 
 - (void)handleNotification:(NSNotification*) notification;
 - (void)handleErrorNotification:(NSNotification*) notification;
+- (NSDictionary *)getConfigurationForScriptExecution:(NSDictionary*) script;
+- (void)execPythonScript:(NSDictionary*) script;
+- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSArray*)arguments;
+- (void)restoreInterface;
+- (void)resetScriptMenu;
+-(NSString *)getKeychainPasswordForURL:(NSURL *)url username:(NSString *)username;
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
-- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSMutableArray*)arguments;
 - (NSUInteger) indexOfScriptWithFilename: (NSString*) filename;
-
+- (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData;
 @end
