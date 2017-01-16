@@ -23,6 +23,8 @@ To set options for the scripts, include one or more of the following somewhere i
 @SGS_QUITAFTER: NO
 @SGS_NOTIFYAFTER: YES
 @SGS_VISIBLE: NO
+@SGS_USERAUTHENTICATION: YES
+@SGS_SITEURL: https://yoursite.shotgunstudio.com
 ```
 
 Explanation of each:
@@ -35,9 +37,14 @@ Explanation of each:
 - `SGS_QUITAFTER` (bool) - will quit the app when the script has completed
 - `SGS_NOTIFYAFTER` (bool) - will show an alert when the script has completed
 - `SGS_VISIBLE` (bool) - will hide the script from the dropdown (it can only be activated as an AMI)
+- `SGS_USERAUTHENTICATION` (bool) - will prompt for login credentials, otherwise a script key must be used inside the script (this requires @SGS_SITEURL to be set)
+- `SGS_SITEURL` (string) - provides a site URL when prompting for a username and password
 
 Custom scripts must have a function called `process_action()`. This will be called when the script is executed, and passed with any parameters in the following order (in the event you provide more than one):
 
+1. Site URL
+1. Username
+1. Password
 1. Path to user-selected folder
 1. Path to user-selected file
 1. Path to user-selected file to create
@@ -64,7 +71,7 @@ Any `print` (or other `stdout`) statements will be output to the log window. Any
 
 ## scripts.plist
 
-Previously it was possible to create and configure the `scripts.plist` file in the `Resources` folder with options for each script. This will no longer be supported due to the inherent complexity of setting it up.
+Previously it was possible to create and configure the `scripts.plist` file in the `Resources` folder with options for each script. This will no longer be supported due to the inherent complexity of setting it up. Instead, use the keywords in each script as described above.
 
 #### scripts.plist options
 The plist root should have an array called `scripts`. This array should contain dictionaries for each script. The dictionary can have the following keys:
@@ -78,4 +85,6 @@ The plist root should have an array called `scripts`. This array should contain 
 - `quitAfter` (bool)
 - `notifyAfter` (bool)
 - `visible` (bool)
+- `userAuthentication` (bool)
+- `siteURL` (string)
 - `arguments` (array)

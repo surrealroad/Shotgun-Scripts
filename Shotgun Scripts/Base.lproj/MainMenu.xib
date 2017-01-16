@@ -20,6 +20,7 @@
                 <outlet property="logger" destination="vYr-gT-1pu" id="T8Z-G2-HMH"/>
                 <outlet property="passwordPanel" destination="suc-RK-uwe" id="wVl-3j-EHd"/>
                 <outlet property="popupButton" destination="QiN-tu-MDC" id="1li-q3-WNm"/>
+                <outlet property="preferencesLabel" destination="zhO-6S-NlX" id="rBZ-lN-c1K"/>
                 <outlet property="preferencesPanel" destination="lWG-zA-wTc" id="DhA-fu-ui1"/>
                 <outlet property="runButton" destination="Wo9-5f-vP0" id="NRj-kD-Wk5"/>
                 <outlet property="shotgunURLField" destination="Ibj-8B-G3F" id="M9P-cL-V9N"/>
@@ -839,25 +840,14 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="lWG-zA-wTc" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="139" y="81" width="473" height="145"/>
+            <rect key="contentRect" x="139" y="81" width="473" height="170"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="ADz-vy-0Fk">
-                <rect key="frame" x="0.0" y="0.0" width="473" height="145"/>
+                <rect key="frame" x="0.0" y="0.0" width="473" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8cF-eU-d8B">
-                        <rect key="frame" x="383" y="13" width="72" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2Q9-Tc-baE">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="closePreferences:" target="Voe-Tx-rLC" id="kVs-lq-Z0o"/>
-                        </connections>
-                    </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ibj-8B-G3F">
-                        <rect key="frame" x="113" y="79" width="336" height="22"/>
+                        <rect key="frame" x="113" y="104" width="336" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://example.shotgunstudio.com" drawsBackground="YES" id="v2D-EP-TgD">
                             <font key="font" metaFont="system"/>
@@ -873,7 +863,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hV-F9-AGU">
-                        <rect key="frame" x="18" y="82" width="88" height="17"/>
+                        <rect key="frame" x="18" y="107" width="88" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shotgun URL:" id="iVY-7p-63u">
                             <font key="font" metaFont="system"/>
@@ -882,7 +872,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPe-BC-xz8">
-                        <rect key="frame" x="113" y="49" width="336" height="22"/>
+                        <rect key="frame" x="113" y="74" width="336" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="TCv-dt-QmJ">
                             <font key="font" metaFont="system"/>
@@ -894,7 +884,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rR8-aU-npV">
-                        <rect key="frame" x="18" y="52" width="70" height="17"/>
+                        <rect key="frame" x="18" y="77" width="70" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Username:" id="OAl-de-Uis">
                             <font key="font" metaFont="system"/>
@@ -903,7 +893,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FcW-hM-UUH">
-                        <rect key="frame" x="198" y="109" width="77" height="17"/>
+                        <rect key="frame" x="198" y="134" width="77" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Preferences" id="F5W-rr-wgs">
                             <font key="font" metaFont="system"/>
@@ -911,9 +901,29 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhO-6S-NlX">
+                        <rect key="frame" x="18" y="49" width="433" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="BWK-Rz-kGW">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8cF-eU-d8B">
+                        <rect key="frame" x="383" y="13" width="72" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2Q9-Tc-baE">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closePreferences:" target="Voe-Tx-rLC" id="kVs-lq-Z0o"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="538.5" y="770.5"/>
+            <point key="canvasLocation" x="538.5" y="783"/>
         </window>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="suc-RK-uwe" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
@@ -958,7 +968,7 @@
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="538.5" y="957.5"/>
+            <point key="canvasLocation" x="549" y="1029"/>
         </window>
     </objects>
 </document>

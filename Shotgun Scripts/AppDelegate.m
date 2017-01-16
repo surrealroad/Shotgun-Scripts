@@ -26,7 +26,8 @@
 @property (weak) IBOutlet NSPanel *preferencesPanel;
 @property (weak) IBOutlet NSPanel *passwordPanel;
 @property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
-
+@property (weak) IBOutlet NSTextField *preferencesLabel;
+@property (nonatomic, assign) BOOL shouldClearPassword;
 
 @end
 
@@ -35,6 +36,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+    self.shouldClearPassword = NO;
 }
 
 // http://stackoverflow.com/a/1991162/262455
@@ -69,7 +71,7 @@
     
     if(scripts == nil) {
         // load from plist
-        NSDictionary *plist = nil; //[NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
+        NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
         if(plist){
             //NSLog(@"plist = %@", plist);
             scripts = [plist objectForKey:@"scripts"];
@@ -123,6 +125,14 @@
                             NSString *visibleString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_VISIBLE:"];
                             if (visibleString) {
                                 [parsedScript setObject:visibleString forKey:@"visible"];
+                            }
+                            NSString *userauthString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_USERAUTHENTICATION:"];
+                            if (userauthString) {
+                                [parsedScript setObject:userauthString forKey:@"userAuthentication"];
+                            }
+                            NSString *siteurlString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_SITEURL:"];
+                            if (siteurlString) {
+                                [parsedScript setObject:siteurlString forKey:@"siteURL"];
                             }
                             
                             [scripts addObject: parsedScript];
@@ -191,49 +201,91 @@
     if ([script valueForKey:@"notifyAfter"]) {
         notifyAfter = [[script valueForKey:@"notifyAfter"] boolValue];
     }
-    
-    // get a username and password, if required
-    // https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/03tasks/tasks.html#//apple_ref/doc/uid/TP30000897-CH205-BCIHAAGG
-    // Fetch password
-    NSURL *sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
-    NSString *sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
-    if(!sgURL || !sgUsername) {
-        // prompt for site / username
-        [self showPreferencesPanel];
-        sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
-        sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
-        if(!sgURL || !sgUsername) {
-            NSAlert *alertSheet = [NSAlert alertWithMessageText:@"Cannot connect to Shotgun" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This script cannot run without a valid Shotgun URL and username."];
-            [alertSheet beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:nil contextInfo:nil];
-            [self.logger appendErrorMessage:@"Missing site credentials\n"];
-            [self restoreInterface];
-        }
+    BOOL userAuthentication = NO;
+    if ([script valueForKey:@"userAuthentication"]) {
+        userAuthentication = [[script valueForKey:@"userAuthentication"] boolValue];
     }
-    NSString *sgPassword = @"";
-    if(sgURL != nil && sgUsername != nil) {
-        sgPassword = [self getKeychainPasswordForURL:sgURL username:sgUsername];
-        [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  [sgURL host]]];
+    if(userAuthentication) {
+        // get a username and password, if required
+        NSURL *sgURL;
+        if([script valueForKey:@"siteURL"]) {
+            // site provided by script
+            sgURL = [NSURL URLWithString:[script valueForKey:@"siteURL"]];
+        } else {
+            // get from preferences
+            sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
+        }
+        NSString *sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+        if(!sgURL || !sgUsername) {
+            // prompt for site / username
+            // https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Sheets/Tasks/UsingAppModalDialogs.html
+            [NSApp beginSheet: self.preferencesPanel
+               modalForWindow: self.window
+                modalDelegate: nil
+               didEndSelector: nil
+                  contextInfo: nil];
+            if(![[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"])
+                [[[NSUserDefaultsController sharedUserDefaultsController] values] setValue:sgURL.absoluteString forKey:@"shotgunURL"];
+            if([[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]) {
+                // give the username field focus
+                [self.preferencesPanel makeFirstResponder:self.shotgunUsernameField];
+                [self.preferencesLabel setStringValue:@"Please provide your Shotgun username"];
+                [self.preferencesLabel setHidden:NO];
+            } else {
+                [self.preferencesLabel setStringValue:@"Please provide your Shotgun site and username"];
+                [self.preferencesLabel setHidden:NO];
+            }
+            [NSApp runModalForWindow: self.preferencesPanel];
+            [NSApp endSheet: self.preferencesPanel];
+            [self.preferencesPanel orderOut: self];
+            [self.preferencesLabel setHidden:YES];
+            
+            sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
+            sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+            if(!sgURL || !sgUsername) {
+                NSAlert *alertSheet = [NSAlert alertWithMessageText:@"Cannot connect to Shotgun" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This script cannot run without a valid Shotgun URL and username."];
+                [alertSheet beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:nil contextInfo:nil];
+                [self.logger appendErrorMessage:@"Missing site credentials\n"];
+                return Nil;
+            }
+        }
         
+        // https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/03tasks/tasks.html#//apple_ref/doc/uid/TP30000897-CH205-BCIHAAGG
+        // Fetch password
         
-        //        char *inputpassword = "topsecret";
-        //        UInt32 inputpassLength = strlen(inputpassword);
-        //        status = SecKeychainAddInternetPassword(
-        //                                                NULL,
-        //                                                strlen(urlString),
-        //                                                urlString,
-        //                                                0,
-        //                                                NULL,
-        //                                                strlen(userString),
-        //                                                userString,
-        //                                                0,
-        //                                                nil,
-        //                                                0,
-        //                                                kSecProtocolTypeHTTPS,
-        //                                                kSecAuthenticationTypeDefault,
-        //                                                inputpassLength,
-        //                                                inputpassword,
-        //                                                NULL
-        //                                                );
+        NSString *sgPassword = @"";
+        BOOL keychainPassword = NO;
+        if(sgURL != nil && sgUsername != nil) {
+            sgPassword = [self getKeychainPasswordForURL:sgURL username:sgUsername];
+            // clear password later
+            if(sgPassword) keychainPassword = YES;
+            
+            [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  sgURL.host]];
+            
+            
+            //        char *inputpassword = "topsecret";
+            //        UInt32 inputpassLength = strlen(inputpassword);
+            //        status = SecKeychainAddInternetPassword(
+            //                                                NULL,
+            //                                                strlen(urlString),
+            //                                                urlString,
+            //                                                0,
+            //                                                NULL,
+            //                                                strlen(userString),
+            //                                                userString,
+            //                                                0,
+            //                                                nil,
+            //                                                0,
+            //                                                kSecProtocolTypeHTTPS,
+            //                                                kSecAuthenticationTypeDefault,
+            //                                                inputpassLength,
+            //                                                inputpassword,
+            //                                                NULL
+            //                                                );
+        }
+        [args addObject:sgURL.absoluteString];
+        [args addObject:sgUsername];
+        [args addObject:sgPassword];
     }
     
     NSString *resultPath = @"";
@@ -518,6 +570,7 @@
 
 // http://stackoverflow.com/questions/8058653/displaying-a-cocoa-window-as-a-sheet-in-xcode-4-osx-10-7-2-with-arc
 - (IBAction)showPreferences:(id)sender {
+    [self.preferencesLabel setHidden:YES];
     [self showPreferencesPanel];
 }
 
@@ -540,9 +593,12 @@
 }
 
 -(IBAction)closePreferences:(id)sender {
+    // this is for when called from preferences menu
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
     [controller save:self];
     [self.window endSheet: self.preferencesPanel];
+    // this is for when called as a modal
+    [NSApp stopModal];
 }
 
 - (IBAction)closePassword:(id)sender {
@@ -579,7 +635,15 @@
                                              NULL
                                              );
     
-    NSLog(@"Retrieving status:%@", SecCopyErrorMessageString(status, NULL));
+    NSLog(@"Retrieval status:%@", SecCopyErrorMessageString(status, NULL));
+    if(status == errSecItemNotFound) {
+        // prompt for password and ask to store in keychain
+        
+    } else if(status == noErr) {
+        self.shouldClearPassword = YES;
+        // some other error
+        return Nil;
+    }
     
     NSString *password = [[NSString alloc] initWithBytes:passwordData
                                           length:returnpasswordLength
