@@ -275,52 +275,56 @@
     
     if (chooseFolder) {
         // http://stackoverflow.com/a/10922591/262455
-        NSOpenPanel *panel = [NSOpenPanel openPanel];
-        [panel setAllowsMultipleSelection:NO];
-        [panel setCanChooseDirectories:YES];
-        [panel setCanCreateDirectories:YES];
-        [panel setCanChooseFiles:NO];
-        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+        NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+        [openPanel setAllowsMultipleSelection:NO];
+        [openPanel setCanChooseDirectories:YES];
+        [openPanel setCanCreateDirectories:YES];
+        [openPanel setCanChooseFiles:NO];
+        [openPanel setTitle: @"Choose Folder"];
+        [openPanel setPrompt: @"Choose"];
+        if ([openPanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        resultURL = [[panel URLs] lastObject];
+        resultURL = [[openPanel URLs] lastObject];
         resultPath = [resultURL path];
         [args addObject:resultPath];
         
     } else if (chooseFile) {
-        NSOpenPanel *panel = [NSOpenPanel openPanel];
-        [panel setAllowsMultipleSelection:NO];
-        [panel setCanChooseDirectories:NO];
-        [panel setCanChooseDirectories:YES];
-        [panel setCanChooseFiles:YES];
-        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+        NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+        [openPanel setAllowsMultipleSelection:NO];
+        [openPanel setCanChooseDirectories:NO];
+        [openPanel setCanChooseDirectories:YES];
+        [openPanel setCanChooseFiles:YES];
+        [openPanel setTitle: @"Choose File"];
+        [openPanel setPrompt: @"Choose"];
+        if ([openPanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        resultURL = [[panel URLs] lastObject];
+        resultURL = [[openPanel URLs] lastObject];
         resultPath = [resultURL path];
         [args addObject:resultPath];
     }
     
     if (saveFile) {
         NSDictionary *saveOptions = [script valueForKey:@"saveFile"];
-        NSSavePanel *panel = [NSSavePanel savePanel];
-        [panel setMessage:@"Choose where to save the file"]; // Message inside modal window
-        [panel setAllowsOtherFileTypes:YES];
-        [panel setExtensionHidden:YES];
-        [panel setCanCreateDirectories:YES];
+        NSSavePanel *savePanel = [NSSavePanel savePanel];
+        [savePanel setMessage:@"Choose where to save the file"]; // Message inside modal window
+        [savePanel setAllowsOtherFileTypes:YES];
+        [savePanel setExtensionHidden:YES];
+        [savePanel setCanCreateDirectories:YES];
         if ([saveOptions valueForKey:@"default"]) {
-            [panel setNameFieldStringValue:[saveOptions valueForKey:@"default"]];
+            [savePanel setNameFieldStringValue:[saveOptions valueForKey:@"default"]];
         }
         
-        [panel setTitle:@"Save file as"]; // Window title
+        [savePanel setTitle:@"Save file as"]; // Window title
         
-        if ([panel runModal] != NSFileHandlingPanelOKButton) {
+        if ([savePanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        NSURL *resultURL = [panel URL];
+        NSURL *resultURL = [savePanel URL];
         resultPath = [resultURL path];
         [args addObject:resultPath];
     }
@@ -626,6 +630,7 @@
     NSLog(@"Retrieval status:%@", SecCopyErrorMessageString(status, NULL));
     if(status == errSecItemNotFound) {
         // prompt for password and ask to store in keychain
+        //TODO
         return Nil;
     } else if(status == noErr) {
         self.shouldClearPassword = YES;
