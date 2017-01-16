@@ -274,7 +274,7 @@
         }
         if(sgURL && sgUsername && sgPassword) {
             [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  sgURL.host]];
-            [args addObject:sgURL.absoluteString];
+            [args addObject:[NSString stringWithFormat:@"%@://%@", sgURL.scheme, sgURL.host]];
             [args addObject:sgUsername];
             [args addObject:sgPassword];
         } else {
@@ -664,10 +664,11 @@
            didEndSelector: nil
               contextInfo: nil];
         [NSApp runModalForWindow: self.passwordPanel];
+        password = [self.shotgunPasswordField stringValue];
         [NSApp endSheet: self.passwordPanel];
         [self.passwordPanel orderOut: self];
         
-         NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+        NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
         if([[[controller values] valueForKey:@"savePassword"] boolValue]) {
             status = SecKeychainAddInternetPassword(
                                                     NULL,
@@ -691,14 +692,14 @@
         
     } else if(status == noErr) {
         self.shouldClearPassword = YES;
+        password = [[NSString alloc] initWithBytes:self.passwordData
+                                            length:returnpasswordLength
+                                          encoding:NSUTF8StringEncoding];
     } else {
         // some other error
         return Nil;
     }
     
-    password = [[NSString alloc] initWithBytes:self.passwordData
-                                          length:returnpasswordLength
-                                        encoding:NSUTF8StringEncoding];
     return password;
 }
     
@@ -746,7 +747,7 @@
         }
         
         // Set URL and username
-        NSURL *siteURL = [[NSURL alloc] initWithScheme:@"https" host:[params objectForKey:@"server_hostname"] path:@""];
+        NSURL *siteURL = [[NSURL alloc] initWithScheme:@"https" host:[params objectForKey:@"server_hostname"] path:@"/"];
         [script setValue:[siteURL absoluteString] forKey:@"siteURL"];
         [script setValue:[params objectForKey:@"user_login"] forKey:@"username"];
         // Save URL and username to defaults as needed
