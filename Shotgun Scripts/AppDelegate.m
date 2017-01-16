@@ -24,6 +24,7 @@
 @property (weak) IBOutlet NSTextField *shotgunURLField;
 @property (weak) IBOutlet NSTextField *shotgunUsernameField;
 @property (weak) IBOutlet NSPanel *preferencesPanel;
+@property (weak) IBOutlet NSButton *preferencesCancelButton;
 @property (weak) IBOutlet NSPanel *passwordPanel;
 @property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
 @property (weak) IBOutlet NSTextField *preferencesLabel;
@@ -237,10 +238,13 @@
                 [self.preferencesLabel setStringValue:@"Please provide your Shotgun site and username"];
                 [self.preferencesLabel setHidden:NO];
             }
+            [self.preferencesCancelButton setHidden:NO];
             [NSApp runModalForWindow: self.preferencesPanel];
+            
             [NSApp endSheet: self.preferencesPanel];
             [self.preferencesPanel orderOut: self];
             [self.preferencesLabel setHidden:YES];
+            [self.preferencesCancelButton setHidden:YES];
             
             sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
             sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
@@ -566,6 +570,7 @@
 }
 
 - (void)showPreferencesPanel {
+    [NSUserDefaultsController.sharedUserDefaultsController setAppliesImmediately:NO];
     [self.window beginSheet: self.preferencesPanel
           completionHandler:^(NSModalResponse returnCode) {
               [NSApp stopModalWithCode: returnCode];
@@ -586,7 +591,17 @@
 -(IBAction)closePreferences:(id)sender {
     [self.preferencesPanel makeFirstResponder:nil]; // required so all changes are committed
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
-    [controller save:self];
+    switch ([sender tag]) {
+        case 0:
+            // ok
+            [controller save:self];
+            break;
+        case 1:
+            [controller revert:self];
+            
+        default:
+            break;
+    }
     // this is for when called from preferences menu
     [self.window endSheet: self.preferencesPanel];
     // this is for when called as a modal

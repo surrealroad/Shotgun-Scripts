@@ -20,6 +20,7 @@
                 <outlet property="logger" destination="vYr-gT-1pu" id="T8Z-G2-HMH"/>
                 <outlet property="passwordPanel" destination="suc-RK-uwe" id="wVl-3j-EHd"/>
                 <outlet property="popupButton" destination="QiN-tu-MDC" id="1li-q3-WNm"/>
+                <outlet property="preferencesCancelButton" destination="wJg-wH-7wN" id="G8x-tZ-eBB"/>
                 <outlet property="preferencesLabel" destination="zhO-6S-NlX" id="rBZ-lN-c1K"/>
                 <outlet property="preferencesPanel" destination="lWG-zA-wTc" id="DhA-fu-ui1"/>
                 <outlet property="runButton" destination="Wo9-5f-vP0" id="NRj-kD-Wk5"/>
@@ -911,14 +912,31 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8cF-eU-d8B">
-                        <rect key="frame" x="383" y="13" width="72" height="32"/>
+                        <rect key="frame" x="390" y="13" width="59" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2Q9-Tc-baE">
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2Q9-Tc-baE">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                         </buttonCell>
                         <connections>
                             <action selector="closePreferences:" target="Voe-Tx-rLC" id="kVs-lq-Z0o"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="wJg-wH-7wN">
+                        <rect key="frame" x="309" y="13" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gqp-YI-IQE">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closePreferences:" target="Voe-Tx-rLC" id="ahE-I8-WzQ"/>
                         </connections>
                     </button>
                 </subviews>
