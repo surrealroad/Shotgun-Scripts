@@ -25,11 +25,12 @@
 @property (weak) IBOutlet NSTextField *shotgunUsernameField;
 @property (weak) IBOutlet NSPanel *preferencesPanel;
 @property (weak) IBOutlet NSButton *preferencesCancelButton;
+@property (weak) IBOutlet NSTextField *preferencesLabel;
 @property (weak) IBOutlet NSPanel *passwordPanel;
 @property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
-@property (weak) IBOutlet NSTextField *preferencesLabel;
 @property (nonatomic, assign) BOOL shouldClearPassword;
 @property char *passwordData;
+
 
 @end
 
@@ -218,7 +219,15 @@
             // get from preferences
             sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
         }
-        NSString *sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
+        NSString *sgUsername;
+        if([script valueForKey:@"username"]) {
+            // username provided by script
+            sgUsername = [script valueForKey:@"username"];
+        } else {
+            // get from preferences
+            sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
+        }
+        
         if(!sgURL || !sgUsername) {
             // prompt for site / username
             // https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Sheets/Tasks/UsingAppModalDialogs.html
@@ -609,7 +618,10 @@
 }
 
 - (IBAction)closePassword:(id)sender {
-    [self.window endSheet: self.passwordPanel];
+    // save the checkbox state
+    NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+    [controller save:self];
+    [NSApp stopModal];
 }
 
 
@@ -620,6 +632,7 @@
     NSLog(@"Looking for %@ @ %@", username, [url host]);
     // http://stackoverflow.com/a/13532428/262455
     OSStatus status;
+    NSString *password;
     
     UInt32 returnpasswordLength = 0;
     
@@ -642,11 +655,40 @@
                                              NULL
                                              );
     
-    NSLog(@"Retrieval status:%@", SecCopyErrorMessageString(status, NULL));
+    NSLog(@"Password retrieval status:%@", SecCopyErrorMessageString(status, NULL));
     if(status == errSecItemNotFound) {
         // prompt for password and ask to store in keychain
-        //TODO
-        return Nil;
+        [NSApp beginSheet: self.passwordPanel
+           modalForWindow: self.window
+            modalDelegate: nil
+           didEndSelector: nil
+              contextInfo: nil];
+        [NSApp runModalForWindow: self.passwordPanel];
+        [NSApp endSheet: self.passwordPanel];
+        [self.passwordPanel orderOut: self];
+        
+         NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+        if([[[controller values] valueForKey:@"savePassword"] boolValue]) {
+            status = SecKeychainAddInternetPassword(
+                                                    NULL,
+                                                    (int)[[url host] length],
+                                                    (char *)[[url host] UTF8String],
+                                                    0,
+                                                    NULL,
+                                                    (int)[username length],
+                                                    (char *)[username UTF8String],
+                                                    0,
+                                                    nil,
+                                                    0,
+                                                    kSecProtocolTypeHTTPS,
+                                                    kSecAuthenticationTypeDefault,
+                                                    (int)[password length],
+                                                    (char *)[password UTF8String],
+                                                    NULL
+                                                    );
+            NSLog(@"Password store status:%@", SecCopyErrorMessageString(status, NULL));
+        }
+        
     } else if(status == noErr) {
         self.shouldClearPassword = YES;
     } else {
@@ -654,7 +696,7 @@
         return Nil;
     }
     
-    NSString *password = [[NSString alloc] initWithBytes:self.passwordData
+    password = [[NSString alloc] initWithBytes:self.passwordData
                                           length:returnpasswordLength
                                         encoding:NSUTF8StringEncoding];
     return password;
@@ -702,6 +744,18 @@
             path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
             [script setObject:path forKey:@"filepath"];
         }
+        
+        // Set URL and username
+        NSURL *siteURL = [[NSURL alloc] initWithScheme:@"https" host:[params objectForKey:@"server_hostname"] path:@""];
+        [script setValue:[siteURL absoluteString] forKey:@"siteURL"];
+        [script setValue:[params objectForKey:@"user_login"] forKey:@"username"];
+        // Save URL and username to defaults as needed
+        NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+        if(![controller.values valueForKey:@"shotgunURL"])
+            [[controller values] setObject:[siteURL absoluteString] forKey:@"shotgunURL"];
+        if(![controller.values valueForKey:@"shotgunUsername"])
+            [[controller values] setObject:[params objectForKey:@"user_login"] forKey:@"shotgunUsername"];
+
         
         // set arguments (there's probably a cleaner way to do this)
         NSMutableArray *oldargs = [script valueForKey:@"arguments"];

@@ -24,6 +24,7 @@
                 <outlet property="preferencesLabel" destination="zhO-6S-NlX" id="rBZ-lN-c1K"/>
                 <outlet property="preferencesPanel" destination="lWG-zA-wTc" id="DhA-fu-ui1"/>
                 <outlet property="runButton" destination="Wo9-5f-vP0" id="NRj-kD-Wk5"/>
+                <outlet property="shotgunPasswordField" destination="LeX-TL-l2O" id="uq4-hy-Moe"/>
                 <outlet property="shotgunURLField" destination="Ibj-8B-G3F" id="M9P-cL-V9N"/>
                 <outlet property="shotgunUsernameField" destination="aPe-BC-xz8" id="qNO-q5-Kfo"/>
                 <outlet property="textView" destination="q17-ms-cip" id="jc0-VB-IYo"/>
@@ -946,14 +947,14 @@ Gw
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="suc-RK-uwe" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="139" y="81" width="473" height="91"/>
+            <rect key="contentRect" x="139" y="81" width="473" height="135"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="6zT-wD-izt">
-                <rect key="frame" x="0.0" y="0.0" width="473" height="91"/>
+                <rect key="frame" x="0.0" y="0.0" width="473" height="135"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jE2-7b-lTM">
-                        <rect key="frame" x="18" y="54" width="66" height="17"/>
+                        <rect key="frame" x="18" y="71" width="66" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Password:" id="y3V-IE-YPP">
                             <font key="font" metaFont="system"/>
@@ -962,7 +963,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <secureTextField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeX-TL-l2O">
-                        <rect key="frame" x="111" y="49" width="342" height="22"/>
+                        <rect key="frame" x="111" y="68" width="342" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="1eH-9J-kPj">
                             <font key="font" metaFont="system"/>
@@ -973,8 +974,32 @@ Gw
                             </allowedInputSourceLocales>
                         </secureTextFieldCell>
                     </secureTextField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPt-z3-Zgd">
+                        <rect key="frame" x="116" y="98" width="240" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Please provide your Shotgun password" id="mFv-UE-la1">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d2I-ar-FDY">
+                        <rect key="frame" x="109" y="44" width="124" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Save in Keychain" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uMv-Cv-RIc">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="zH1-ZP-wfl" name="value" keyPath="values.savePassword" id="m1c-RZ-ULm">
+                                <dictionary key="options">
+                                    <bool key="NSValidatesImmediately" value="YES"/>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wuj-sA-vf1">
-                        <rect key="frame" x="383" y="13" width="72" height="32"/>
+                        <rect key="frame" x="387" y="13" width="72" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6Jl-2M-aOG">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -986,7 +1011,7 @@ Gw
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="549" y="1029"/>
+            <point key="canvasLocation" x="548.5" y="1050.5"/>
         </window>
     </objects>
 </document>
