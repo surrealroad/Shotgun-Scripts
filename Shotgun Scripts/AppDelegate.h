@@ -21,7 +21,7 @@
 - (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSArray*)arguments;
 - (void)restoreInterface;
 - (void)resetScriptMenu;
--(NSString *)getKeychainPasswordForURL:(NSURL *)url username:(NSString *)username;
+-(NSString *)getPasswordForURL:(NSURL *)url username:(NSString *)username;
 - (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
 - (NSUInteger) indexOfScriptWithFilename: (NSString*) filename;
 - (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData;

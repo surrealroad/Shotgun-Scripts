@@ -28,6 +28,7 @@
 @property (weak) IBOutlet NSSecureTextField *shotgunPasswordField;
 @property (weak) IBOutlet NSTextField *preferencesLabel;
 @property (nonatomic, assign) BOOL shouldClearPassword;
+@property char *passwordData;
 
 @end
 
@@ -206,6 +207,7 @@
         userAuthentication = [[script valueForKey:@"userAuthentication"] boolValue];
     }
     if(userAuthentication) {
+        NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
         // get a username and password, if required
         NSURL *sgURL;
         if([script valueForKey:@"siteURL"]) {
@@ -213,9 +215,9 @@
             sgURL = [NSURL URLWithString:[script valueForKey:@"siteURL"]];
         } else {
             // get from preferences
-            sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
+            sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
         }
-        NSString *sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+        NSString *sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
         if(!sgURL || !sgUsername) {
             // prompt for site / username
             // https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Sheets/Tasks/UsingAppModalDialogs.html
@@ -224,9 +226,9 @@
                 modalDelegate: nil
                didEndSelector: nil
                   contextInfo: nil];
-            if(![[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"])
-                [[[NSUserDefaultsController sharedUserDefaultsController] values] setValue:sgURL.absoluteString forKey:@"shotgunURL"];
-            if([[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]) {
+            if(![[controller values] valueForKey:@"shotgunURL"])
+                [[controller values] setValue:sgURL.absoluteString forKey:@"shotgunURL"];
+            if([[controller values] valueForKey:@"shotgunURL"]) {
                 // give the username field focus
                 [self.preferencesPanel makeFirstResponder:self.shotgunUsernameField];
                 [self.preferencesLabel setStringValue:@"Please provide your Shotgun username"];
@@ -240,8 +242,8 @@
             [self.preferencesPanel orderOut: self];
             [self.preferencesLabel setHidden:YES];
             
-            sgURL = [NSURL URLWithString:[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunURL"]];
-            sgUsername = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:@"shotgunUsername"];
+            sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
+            sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
             if(!sgURL || !sgUsername) {
                 NSAlert *alertSheet = [NSAlert alertWithMessageText:@"Cannot connect to Shotgun" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This script cannot run without a valid Shotgun URL and username."];
                 [alertSheet beginSheetModalForWindow:self.window modalDelegate:nil didEndSelector:nil contextInfo:nil];
@@ -254,38 +256,18 @@
         // Fetch password
         
         NSString *sgPassword = @"";
-        BOOL keychainPassword = NO;
-        if(sgURL != nil && sgUsername != nil) {
-            sgPassword = [self getKeychainPasswordForURL:sgURL username:sgUsername];
-            // clear password later
-            if(sgPassword) keychainPassword = YES;
-            
-            [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  sgURL.host]];
-            
-            
-            //        char *inputpassword = "topsecret";
-            //        UInt32 inputpassLength = strlen(inputpassword);
-            //        status = SecKeychainAddInternetPassword(
-            //                                                NULL,
-            //                                                strlen(urlString),
-            //                                                urlString,
-            //                                                0,
-            //                                                NULL,
-            //                                                strlen(userString),
-            //                                                userString,
-            //                                                0,
-            //                                                nil,
-            //                                                0,
-            //                                                kSecProtocolTypeHTTPS,
-            //                                                kSecAuthenticationTypeDefault,
-            //                                                inputpassLength,
-            //                                                inputpassword,
-            //                                                NULL
-            //                                                );
+        if(sgURL && sgUsername) {
+            sgPassword = [self getPasswordForURL:sgURL username:sgUsername];
         }
-        [args addObject:sgURL.absoluteString];
-        [args addObject:sgUsername];
-        [args addObject:sgPassword];
+        if(sgURL && sgUsername && sgPassword) {
+            [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  sgURL.host]];
+            [args addObject:sgURL.absoluteString];
+            [args addObject:sgUsername];
+            [args addObject:sgPassword];
+        } else {
+            [self.logger appendErrorMessage:@"Missing site credentials\n"];
+            return Nil;
+        }
     }
     
     NSString *resultPath = @"";
@@ -491,6 +473,11 @@
 
 - (void)restoreInterface {
     dispatch_async(dispatch_get_main_queue(), ^{
+        // clear password if required
+        if(self.shouldClearPassword) {
+            NSLog(@"Clearing password data: %@", SecCopyErrorMessageString(SecKeychainItemFreeContent(NULL, _passwordData), NULL));
+            self.shouldClearPassword = NO;
+        }
         // stop progress indicator
         [self.circularProgress setHidden:YES];
         // enable buttons/fields
@@ -593,9 +580,10 @@
 }
 
 -(IBAction)closePreferences:(id)sender {
-    // this is for when called from preferences menu
+    [self.preferencesPanel makeFirstResponder:nil]; // required so all changes are committed
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
     [controller save:self];
+    // this is for when called from preferences menu
     [self.window endSheet: self.preferencesPanel];
     // this is for when called as a modal
     [NSApp stopModal];
@@ -608,14 +596,14 @@
 
 #pragma mark - Keychain handling
 
--(NSString *)getKeychainPasswordForURL:(NSURL *)url username:(NSString *)username {
+-(NSString *)getPasswordForURL:(NSURL *)url username:(NSString *)username {
     // I have tried and tried to make this work with iCloud but it is not worth the hassle
     NSLog(@"Looking for %@ @ %@", username, [url host]);
     // http://stackoverflow.com/a/13532428/262455
     OSStatus status;
     
     UInt32 returnpasswordLength = 0;
-    char *passwordData;
+    
     
     status = SecKeychainFindInternetPassword(
                                              NULL,
@@ -631,21 +619,22 @@
                                              kSecProtocolTypeHTTPS, // TODO
                                              kSecAuthenticationTypeDefault,
                                              &returnpasswordLength,
-                                             (void *)&passwordData,
+                                             (void *)&_passwordData,
                                              NULL
                                              );
     
     NSLog(@"Retrieval status:%@", SecCopyErrorMessageString(status, NULL));
     if(status == errSecItemNotFound) {
         // prompt for password and ask to store in keychain
-        
+        return Nil;
     } else if(status == noErr) {
         self.shouldClearPassword = YES;
+    } else {
         // some other error
         return Nil;
     }
     
-    NSString *password = [[NSString alloc] initWithBytes:passwordData
+    NSString *password = [[NSString alloc] initWithBytes:self.passwordData
                                           length:returnpasswordLength
                                         encoding:NSUTF8StringEncoding];
     return password;

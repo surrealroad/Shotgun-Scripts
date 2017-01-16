@@ -880,7 +880,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <binding destination="zH1-ZP-wfl" name="value" keyPath="values.shotgunUsername" id="DKK-dy-0to"/>
+                            <binding destination="zH1-ZP-wfl" name="value" keyPath="values.shotgunUsername" id="BZX-vx-Pia"/>
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rR8-aU-npV">
