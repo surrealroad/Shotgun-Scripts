@@ -40,6 +40,9 @@
     // Insert code here to initialize your application
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     self.shouldClearPassword = NO;
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
+                                                              @"shotgunURL":@"",
+                                                              @"shotgunUsername":@""}];
 }
 
 // http://stackoverflow.com/a/1991162/262455
@@ -215,7 +218,7 @@
         if([script valueForKey:@"siteURL"]) {
             // site provided by script
             sgURL = [NSURL URLWithString:[script valueForKey:@"siteURL"]];
-        } else {
+        } else if ([[[controller values] valueForKey:@"shotgunURL"] length]) {
             // get from preferences
             sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
         }
@@ -223,7 +226,7 @@
         if([script valueForKey:@"username"]) {
             // username provided by script
             sgUsername = [script valueForKey:@"username"];
-        } else {
+        } else if ([[[controller values] valueForKey:@"shotgunUsername"] length]) {
             // get from preferences
             sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
         }
