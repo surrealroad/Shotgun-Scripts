@@ -251,13 +251,16 @@
                 [self.preferencesLabel setHidden:NO];
             }
             [self.preferencesCancelButton setHidden:NO];
-            [NSApp runModalForWindow: self.preferencesPanel];
-            
+            NSInteger code = [NSApp runModalForWindow: self.preferencesPanel];
             [NSApp endSheet: self.preferencesPanel];
             [self.preferencesPanel orderOut: self];
             [self.preferencesLabel setHidden:YES];
             [self.preferencesCancelButton setHidden:YES];
             
+            if(code != NSOKButton) {
+                [self.logger appendErrorMessage:@"Script cancelled\n"];
+                return Nil;
+            }
             sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
             sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
             if(!sgURL || !sgUsername) {
@@ -274,6 +277,7 @@
         NSString *sgPassword = @"";
         if(sgURL && sgUsername) {
             sgPassword = [self getPasswordForURL:sgURL username:sgUsername];
+            if(!sgPassword) return Nil;
         }
         if(sgURL && sgUsername && sgPassword) {
             [self.logger appendLogMessage:[NSString stringWithFormat:@"Authenticating with site %@\n",  sgURL.host]];
@@ -603,13 +607,17 @@
 -(IBAction)closePreferences:(id)sender {
     [self.preferencesPanel makeFirstResponder:nil]; // required so all changes are committed
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
+    NSInteger code;
     switch ([sender tag]) {
         case 0:
             // ok
             [controller save:self];
+            code = NSOKButton;
             break;
         case 1:
             [controller revert:self];
+            code = NSCancelButton;
+            break;
             
         default:
             break;
@@ -617,14 +625,27 @@
     // this is for when called from preferences menu
     [self.window endSheet: self.preferencesPanel];
     // this is for when called as a modal
-    [NSApp stopModal];
+    [NSApp stopModalWithCode:code];
 }
 
 - (IBAction)closePassword:(id)sender {
-    // save the checkbox state
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
-    [controller save:self];
-    [NSApp stopModal];
+    NSInteger code;
+    switch ([sender tag]) {
+        case 0:
+            // ok
+            [controller save:self];
+            code = NSOKButton;
+            break;
+        case 1:
+            [controller revert:self];
+            code = NSCancelButton;
+            break;
+            
+        default:
+            break;
+    }
+    [NSApp stopModalWithCode:code];
 }
 
 
@@ -666,10 +687,14 @@
             modalDelegate: nil
            didEndSelector: nil
               contextInfo: nil];
-        [NSApp runModalForWindow: self.passwordPanel];
+        NSInteger code = [NSApp runModalForWindow: self.passwordPanel];
         password = [self.shotgunPasswordField stringValue];
         [NSApp endSheet: self.passwordPanel];
         [self.passwordPanel orderOut: self];
+        if(code != NSOKButton) {
+            [self.logger appendErrorMessage:@"Script cancelled\n"];
+            return Nil;
+        }
         
         NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
         if([[[controller values] valueForKey:@"savePassword"] boolValue]) {
