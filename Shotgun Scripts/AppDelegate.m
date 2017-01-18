@@ -40,13 +40,15 @@
     // Insert code here to initialize your application
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     self.shouldClearPassword = NO;
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-                                                              @"shotgunURL":@"",
-                                                              @"shotgunUsername":@""}];
 }
 
 // http://stackoverflow.com/a/1991162/262455
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
+    // set defaults prior to being called by URL event
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
+                                                              @"shotgunURL":@"",
+                                                              @"shotgunUsername":@"",
+                                                              @"savePassword":@YES}];
     
     // Set up URL handling
     [[NSAppleEventManager sharedAppleEventManager]
