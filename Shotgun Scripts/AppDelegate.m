@@ -241,8 +241,10 @@
                 modalDelegate: nil
                didEndSelector: nil
                   contextInfo: nil];
-            if(![[controller values] valueForKey:@"shotgunURL"])
-                [[controller values] setValue:sgURL.absoluteString forKey:@"shotgunURL"];
+            if(sgURL &&
+               (![controller.values valueForKey:@"shotgunURL"] ||
+                ![[[controller values] valueForKey:@"shotgunURL"] length]))
+                [[controller values] setValue:[NSString stringWithFormat:@"%@://%@", sgURL.scheme, sgURL.host] forKey:@"shotgunURL"];
             if([[controller values] valueForKey:@"shotgunURL"]) {
                 // give the username field focus
                 [self.preferencesPanel makeFirstResponder:self.shotgunUsernameField];
@@ -782,10 +784,10 @@
         [script setValue:[params objectForKey:@"user_login"] forKey:@"username"];
         // Save URL and username to defaults as needed
         NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
-        if(![controller.values valueForKey:@"shotgunURL"])
-            [[controller values] setObject:[siteURL absoluteString] forKey:@"shotgunURL"];
-        if(![controller.values valueForKey:@"shotgunUsername"])
-            [[controller values] setObject:[params objectForKey:@"user_login"] forKey:@"shotgunUsername"];
+        if(![controller.values valueForKey:@"shotgunURL"] || ![[controller.values valueForKey:@"shotgunURL"] length])
+            [[controller values] setValue:[NSString stringWithFormat:@"%@://%@", siteURL.scheme, siteURL.host] forKey:@"shotgunURL"];
+        if(![controller.values valueForKey:@"shotgunUsername"] || ![[controller.values valueForKey:@"shotgunUsername"] length])
+            [[controller values] setValue:[params objectForKey:@"user_login"] forKey:@"shotgunUsername"];
 
         
         // set arguments (there's probably a cleaner way to do this)
