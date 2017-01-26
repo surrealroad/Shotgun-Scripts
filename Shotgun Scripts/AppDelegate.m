@@ -295,7 +295,7 @@
     }
     
     NSString *resultPath = @"";
-    NSURL *resultURL = nil;
+    NSURL *resultURL = [[NSURL alloc] init];
     
     if (chooseFolder) {
         // http://stackoverflow.com/a/10922591/262455
