@@ -186,6 +186,7 @@
 
 - (NSDictionary *)getConfigurationForScriptExecution:(NSDictionary*) script {
     // return a dictionary containing arguments and other session-specific data
+    NSLog(@"Getting configuration for script");
 
     NSMutableArray *args = [[NSMutableArray alloc] init];
     
@@ -357,14 +358,15 @@
         [args addObjectsFromArray:[script valueForKey:@"arguments"]];
     }
     
-    NSDictionary *config = @{@"arguments":args,
-                             @"resultURL":resultURL,
-                             @"chooseFolder":[NSNumber numberWithBool:chooseFolder],
-                             @"chooseFile":[NSNumber numberWithBool:chooseFile],
-                             @"saveFile":[NSNumber numberWithBool:saveFile],
-                             @"shouldTerminate":[NSNumber numberWithBool:shouldTerminate],
-                             @"notifyAfter":[NSNumber numberWithBool:notifyAfter],
-                             };
+    NSDictionary *config = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+         args,@"arguments",
+         resultURL,@"resultURL",
+         [NSNumber numberWithBool:chooseFolder],@"chooseFolder",
+         [NSNumber numberWithBool:chooseFile],@"chooseFile",
+         [NSNumber numberWithBool:saveFile],@"saveFile",
+         [NSNumber numberWithBool:shouldTerminate],@"shouldTerminate",
+         [NSNumber numberWithBool:notifyAfter],@"notifyAfter",
+        nil];
     
     return config;
 }
