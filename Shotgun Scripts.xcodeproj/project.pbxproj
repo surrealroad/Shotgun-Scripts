@@ -10,6 +10,7 @@
 		045E237C1B7CD27000EAC3B7 /* NSURL+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */; };
 		045E237F1B7CD30100EAC3B7 /* NSString+ParseCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */; };
 		045E23891B7CED3A00EAC3B7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 045E23861B7CED2900EAC3B7 /* MainMenu.xib */; };
+		046A9BF51E5C523900918E93 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046A9BF41E5C523900918E93 /* Python.framework */; };
 		049325211B4EA84800618482 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325201B4EA84800618482 /* AppDelegate.m */; };
 		049325231B4EA84800618482 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 049325221B4EA84800618482 /* main.m */; };
 		049325251B4EA84800618482 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049325241B4EA84800618482 /* Images.xcassets */; };
@@ -37,6 +38,7 @@
 		045E237B1B7CD27000EAC3B7 /* NSURL+ParseCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+ParseCategory.m"; path = "../NSURL+ParseCategory.m"; sourceTree = "<group>"; };
 		045E237D1B7CD30100EAC3B7 /* NSString+ParseCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ParseCategory.h"; sourceTree = "<group>"; };
 		045E237E1B7CD30100EAC3B7 /* NSString+ParseCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ParseCategory.m"; sourceTree = "<group>"; };
+		046A9BF41E5C523900918E93 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		0493251A1B4EA84800618482 /* Shotgun Scripts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shotgun Scripts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0493251E1B4EA84800618482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0493251F1B4EA84800618482 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046A9BF51E5C523900918E93 /* Python.framework in Frameworks */,
 				04ED6F071E1F019A0000DC87 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,6 +148,7 @@
 		04ED6F051E1F019A0000DC87 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				046A9BF41E5C523900918E93 /* Python.framework */,
 				04ED6F061E1F019A0000DC87 /* Security.framework */,
 			);
 			name = Frameworks;

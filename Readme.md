@@ -43,8 +43,7 @@ Explanation of each:
 Custom scripts must have a function called `process_action()`. This will be called when the script is executed, and passed with any parameters in the following order (in the event you provide more than one):
 
 1. Site URL
-1. Username
-1. Password
+1. Session token
 1. Path to user-selected folder
 1. Path to user-selected file
 1. Path to user-selected file to create

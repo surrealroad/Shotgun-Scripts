@@ -14,15 +14,4 @@
     NSMutableArray *scripts;
 }
 
-- (void)handleNotification:(NSNotification*) notification;
-- (void)handleErrorNotification:(NSNotification*) notification;
-- (NSDictionary *)getConfigurationForScriptExecution:(NSDictionary*) script;
-- (void)execPythonScript:(NSDictionary*) script;
-- (BOOL)runPythonScript:(NSString*)scriptPath runFunction:(NSString*)functionName withArguments:(NSArray*)arguments;
-- (void)restoreInterface;
-- (void)resetScriptMenu;
--(NSString *)getPasswordForURL:(NSURL *)url username:(NSString *)username;
-- (void)handleURLEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
-- (NSUInteger) indexOfScriptWithFilename: (NSString*) filename;
-- (NSString *)getDataFromSourceString:(NSString *)data afterString:(NSString *)leftData;
 @end
