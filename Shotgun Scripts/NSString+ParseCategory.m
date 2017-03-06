@@ -18,13 +18,13 @@
     NSArray *secondExplode;
     
     // Explode based on inner glue
-    NSInteger count = [firstExplode count];
+    NSInteger count = firstExplode.count;
     NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithCapacity:count];
     for (NSInteger i = 0; i < count; i++) {
-        secondExplode = [(NSString *)[firstExplode objectAtIndex:i] componentsSeparatedByString:innerGlue];
-        if ([secondExplode count] == 2) {
-            NSString *value = [[[secondExplode objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-            [returnDictionary setObject:value forKey:[secondExplode objectAtIndex:0]];
+        secondExplode = [(NSString *)firstExplode[i] componentsSeparatedByString:innerGlue];
+        if (secondExplode.count == 2) {
+            NSString *value = [[secondExplode[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+            returnDictionary[secondExplode[0]] = value;
         }
     }
     

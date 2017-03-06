@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSURL (ParseCategory)
-- (NSArray *)pathArray;
-- (NSDictionary *)queryDictionary;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *pathArray;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSDictionary *queryDictionary;
 
 @end

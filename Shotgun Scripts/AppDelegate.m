@@ -38,7 +38,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
+    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
 }
 
 // http://stackoverflow.com/a/1991162/262455
@@ -81,7 +81,7 @@
         NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"scripts" ofType:@"plist"]];
         if(plist){
             //NSLog(@"plist = %@", plist);
-            scripts = [plist objectForKey:@"scripts"];
+            scripts = plist[@"scripts"];
         } else {
             scripts = [[NSMutableArray alloc] init];
             // read info from files
@@ -104,42 +104,42 @@
                             NSMutableDictionary *parsedScript = [[NSMutableDictionary alloc]
                                     initWithObjectsAndKeys:
                                        scriptPath, @"filepath",
-                                       [[scriptPath lastPathComponent] stringByDeletingPathExtension], @"filename",
+                                       scriptPath.lastPathComponent.stringByDeletingPathExtension, @"filename",
                                        scriptName, @"name",
                                        [self getDataFromSourceString:scriptContents afterString:@"@SGS_DESCRIPTION:"], @"description",
                                     nil
                             ];
                             NSString *chooseFolderString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_CHOOSEFOLDER:"];
                             if (chooseFolderString) {
-                                [parsedScript setObject:chooseFolderString forKey:@"chooseFolder"];
+                                parsedScript[@"chooseFolder"] = chooseFolderString;
                             }
                             NSString *chooseFileString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_CHOOSEFILE:"];
                             if (chooseFileString) {
-                                [parsedScript setObject:chooseFileString forKey:@"chooseFile"];
+                                parsedScript[@"chooseFile"] = chooseFileString;
                             }
                             NSString *saveFileString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_SAVEFILE:"];
                             if (saveFileString) {
-                                [parsedScript setObject:saveFileString forKey:@"saveFile"];
+                                parsedScript[@"saveFile"] = saveFileString;
                             }
                             NSString *quitAfterString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_QUITAFTER:"];
                             if (quitAfterString) {
-                                [parsedScript setObject:quitAfterString forKey:@"quitAfter"];
+                                parsedScript[@"quitAfter"] = quitAfterString;
                             }
                             NSString *notifyAfterString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_NOTIFYAFTER:"];
                             if (notifyAfterString) {
-                                [parsedScript setObject:notifyAfterString forKey:@"notifyAfter"];
+                                parsedScript[@"notifyAfter"] = notifyAfterString;
                             }
                             NSString *visibleString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_VISIBLE:"];
                             if (visibleString) {
-                                [parsedScript setObject:visibleString forKey:@"visible"];
+                                parsedScript[@"visible"] = visibleString;
                             }
                             NSString *userauthString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_USERAUTHENTICATION:"];
                             if (userauthString) {
-                                [parsedScript setObject:userauthString forKey:@"userAuthentication"];
+                                parsedScript[@"userAuthentication"] = userauthString;
                             }
                             NSString *siteurlString = [self getDataFromSourceString:scriptContents afterString:@"@SGS_SITEURL:"];
                             if (siteurlString) {
-                                [parsedScript setObject:siteurlString forKey:@"siteURL"];
+                                parsedScript[@"siteURL"] = siteurlString;
                             }
                             
                             [scripts addObject: parsedScript];
@@ -157,7 +157,7 @@
         }
     }
     
-    NSLog(@"%lu", (unsigned long)[scripts count]);
+    NSLog(@"%lu", (unsigned long)scripts.count);
     
     [self resetScriptMenu];
     }
@@ -168,7 +168,7 @@
 // intercepts stdout
 - (void)handleNotification:(NSNotification*) notification {
     [pipeReadHandle readInBackgroundAndNotify] ;
-    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
+    NSString *str = [[NSString alloc] initWithData: notification.userInfo[NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
     // Do whatever you want with str
     [self.logger appendLogMessage:str];
 }
@@ -176,7 +176,7 @@
 // intercepts stderr
 - (void)handleErrorNotification:(NSNotification*) notification {
     [errorPipeReadHandle readInBackgroundAndNotify] ;
-    NSString *str = [[NSString alloc] initWithData: [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
+    NSString *str = [[NSString alloc] initWithData: notification.userInfo[NSFileHandleNotificationDataItem] encoding: NSUTF8StringEncoding] ;
     // Do whatever you want with str
     [self.logger appendErrorMessage:str];
 }
@@ -220,17 +220,17 @@
         if([script valueForKey:@"siteURL"]) {
             // site provided by script
             sgURL = [NSURL URLWithString:[script valueForKey:@"siteURL"]];
-        } else if ([[[controller values] valueForKey:@"shotgunURL"] length]) {
+        } else if ([[controller.values valueForKey:@"shotgunURL"] length]) {
             // get from preferences
-            sgURL = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
+            sgURL = [NSURL URLWithString:[controller.values valueForKey:@"shotgunURL"]];
         }
         NSString *sgUsername;
         if([script valueForKey:@"username"]) {
             // username provided by script
             sgUsername = [script valueForKey:@"username"];
-        } else if ([[[controller values] valueForKey:@"shotgunUsername"] length]) {
+        } else if ([[controller.values valueForKey:@"shotgunUsername"] length]) {
             // get from preferences
-            sgUsername = [[controller values] valueForKey:@"shotgunUsername"];
+            sgUsername = [controller.values valueForKey:@"shotgunUsername"];
         }
         
         NSString *token = [self authenticateUser:sgUsername AtURL:sgURL WithMessage:Nil];
@@ -252,14 +252,14 @@
         [openPanel setCanChooseDirectories:YES];
         [openPanel setCanCreateDirectories:YES];
         [openPanel setCanChooseFiles:NO];
-        [openPanel setTitle: @"Choose Folder"];
-        [openPanel setPrompt: @"Choose"];
+        openPanel.title = @"Choose Folder";
+        openPanel.prompt = @"Choose";
         if ([openPanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        resultURL = [[openPanel URLs] lastObject];
-        resultPath = [resultURL path];
+        resultURL = openPanel.URLs.lastObject;
+        resultPath = resultURL.path;
         [args addObject:resultPath];
         
     } else if (chooseFile) {
@@ -268,36 +268,36 @@
         [openPanel setCanChooseDirectories:NO];
         [openPanel setCanChooseDirectories:YES];
         [openPanel setCanChooseFiles:YES];
-        [openPanel setTitle: @"Choose File"];
-        [openPanel setPrompt: @"Choose"];
+        openPanel.title = @"Choose File";
+        openPanel.prompt = @"Choose";
         if ([openPanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        resultURL = [[openPanel URLs] lastObject];
-        resultPath = [resultURL path];
+        resultURL = openPanel.URLs.lastObject;
+        resultPath = resultURL.path;
         [args addObject:resultPath];
     }
     
     if (saveFile) {
         NSDictionary *saveOptions = [script valueForKey:@"saveFile"];
         NSSavePanel *savePanel = [NSSavePanel savePanel];
-        [savePanel setMessage:@"Choose where to save the file"]; // Message inside modal window
+        savePanel.message = @"Choose where to save the file"; // Message inside modal window
         [savePanel setAllowsOtherFileTypes:YES];
         [savePanel setExtensionHidden:YES];
         [savePanel setCanCreateDirectories:YES];
         if ([saveOptions valueForKey:@"default"]) {
-            [savePanel setNameFieldStringValue:[saveOptions valueForKey:@"default"]];
+            savePanel.nameFieldStringValue = [saveOptions valueForKey:@"default"];
         }
         
-        [savePanel setTitle:@"Save file as"]; // Window title
+        savePanel.title = @"Save file as"; // Window title
         
         if ([savePanel runModal] != NSFileHandlingPanelOKButton) {
             [self.logger appendErrorMessage:[NSString stringWithFormat:@"Script cancelled.\n"]];
             return Nil;
         }
-        NSURL *resultURL = [savePanel URL];
-        resultPath = [resultURL path];
+        NSURL *resultURL = savePanel.URL;
+        resultPath = resultURL.path;
         [args addObject:resultPath];
     }
     
@@ -308,11 +308,11 @@
     NSDictionary *config = [NSMutableDictionary dictionaryWithObjectsAndKeys:
          args,@"arguments",
          resultURL,@"resultURL",
-         [NSNumber numberWithBool:chooseFolder],@"chooseFolder",
-         [NSNumber numberWithBool:chooseFile],@"chooseFile",
-         [NSNumber numberWithBool:saveFile],@"saveFile",
-         [NSNumber numberWithBool:shouldTerminate],@"shouldTerminate",
-         [NSNumber numberWithBool:notifyAfter],@"notifyAfter",
+         @(chooseFolder),@"chooseFolder",
+         @(chooseFile),@"chooseFile",
+         @(saveFile),@"saveFile",
+         @(shouldTerminate),@"shouldTerminate",
+         @(notifyAfter),@"notifyAfter",
         nil];
     
     return config;
@@ -361,7 +361,7 @@
                 [alert addButtonWithTitle:@"Open Location"];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
+                [alert beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
                     if(result == NSAlertSecondButtonReturn) {
                         if([[config valueForKey:@"chooseFolder"] boolValue]) [[NSWorkspace sharedWorkspace]openFile:[[config valueForKey:@"resultURL"] path] withApplication:@"Finder"];
                         else [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ [config valueForKey:@"resultURL"] ]];
@@ -399,13 +399,13 @@
     // Set up piping for stdout
     // http://stackoverflow.com/a/2590723/262455
     pipe = [NSPipe pipe] ;
-    pipeReadHandle = [pipe fileHandleForReading] ;
+    pipeReadHandle = pipe.fileHandleForReading ;
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleNotification:) name: NSFileHandleReadCompletionNotification object: pipeReadHandle] ;
     [pipeReadHandle readInBackgroundAndNotify] ;
     
     // Set up piping for stderr
     errorPipe = [NSPipe pipe] ;
-    errorPipeReadHandle = [errorPipe fileHandleForReading] ;
+    errorPipeReadHandle = errorPipe.fileHandleForReading ;
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(handleErrorNotification:) name: NSFileHandleReadCompletionNotification object: errorPipeReadHandle] ;
     [errorPipeReadHandle readInBackgroundAndNotify] ;
     
@@ -419,17 +419,17 @@
     task.arguments = args;
     
     // NSLog breaks if we don't do this...
-    [task setStandardInput: [NSPipe pipe]];
+    task.standardInput = [NSPipe pipe];
     
-    [task setStandardOutput:pipe];
-    [task setStandardError: errorPipe];
+    task.standardOutput = pipe;
+    task.standardError = errorPipe;
     
     // disable internal buffering
     // http://stackoverflow.com/a/8269886/262455
-    NSDictionary *defaultEnvironment = [[NSProcessInfo processInfo] environment];
+    NSDictionary *defaultEnvironment = [NSProcessInfo processInfo].environment;
     NSMutableDictionary *environment = [[NSMutableDictionary alloc] initWithDictionary:defaultEnvironment];
-    [environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
-    [task setEnvironment:environment];
+    environment[@"NSUnbufferedIO"] = @"YES";
+    task.environment = environment;
     
     [task launch];
     
@@ -454,9 +454,9 @@
         [self.circularProgress setHidden:YES];
         // enable buttons/fields
         if (self.controller.selectedObjects && self.controller.selectedObjects.count) {
-            NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
+            NSDictionary *script = (self.controller.selectedObjects)[0][@"script"];
             if (script) {
-                [self.runButton setEnabled:[[script valueForKey:@"visible"] boolValue]];
+                (self.runButton).enabled = [[script valueForKey:@"visible"] boolValue];
                 [self.popupButton setEnabled:YES];
                 [self.textView setEditable:YES];
             }
@@ -487,7 +487,7 @@
         }
         if(path && shouldDisplay) {
             NSLog(@"Adding script %@", [script valueForKey:@"name"]);
-            [script setObject:path forKey:@"filepath"];
+            script[@"filepath"] = path;
             NSString *description = [script valueForKey:@"description"];
             if (!description) description = @"";
             
@@ -505,7 +505,7 @@
 
 - (IBAction)runScript:(id)sender {
     if (self.controller.selectedObjects && self.controller.selectedObjects.count) {
-        NSDictionary *script = [[self.controller.selectedObjects objectAtIndex:0] objectForKey:@"script"];
+        NSDictionary *script = (self.controller.selectedObjects)[0][@"script"];
         
         // don't allow running of hidden scripts via button
         BOOL shouldRun = YES;
@@ -609,7 +609,7 @@
     
     Py_Initialize();
     //[self.logger setLogMessage:@"PyInit\n"];
-    const char *pypath = [[[NSBundle mainBundle] resourcePath] UTF8String];
+    const char *pypath = [NSBundle mainBundle].resourcePath.UTF8String;
     // import sys
     PyObject *sys = PyImport_Import(PyString_FromString("sys"));
     
@@ -632,10 +632,10 @@
     PyObject *shotgun = PyObject_GetAttrString(shotgun_api, "Shotgun");
     if (shotgun && PyCallable_Check(shotgun)){
         PyObject *args = PyTuple_New(1);
-        PyTuple_SetItem(args, 0, PyString_FromString([site UTF8String]));
+        PyTuple_SetItem(args, 0, PyString_FromString(site.UTF8String));
         PyObject *keywords = PyDict_New();
-        PyDict_SetItemString(keywords, "login", PyString_FromString([username UTF8String]));
-        PyDict_SetItemString(keywords, "password", PyString_FromString([password UTF8String]));
+        PyDict_SetItemString(keywords, "login", PyString_FromString(username.UTF8String));
+        PyDict_SetItemString(keywords, "password", PyString_FromString(password.UTF8String));
         PyObject *sg = PyObject_Call(shotgun, args, keywords);
         if(sg == NULL){
             PyObject *ptype, *pvalue, *ptraceback;
@@ -646,7 +646,7 @@
         PyObject *result = PyObject_CallMethod(sg, "get_session_token", NULL);
         if(result) {
             //NSLog(@"Session token: %s", PyString_AsString(result));
-            NSString *token = [[NSString alloc] initWithUTF8String:PyString_AsString(result)];
+            NSString *token = @(PyString_AsString(result));
             return token;
         }
     }
@@ -658,9 +658,9 @@
 -(NSString *)promptForPasswordForUser:(NSString *)username AtURL:(NSURL *)url WithMessage:(NSString*)message {
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
     if(username)
-        [[controller values] setValue:username forKey:@"shotgunUsername"];
+        [controller.values setValue:username forKey:@"shotgunUsername"];
     if(url)
-        [[controller values] setValue:[NSString stringWithFormat:@"%@://%@", url.scheme, url.host] forKey:@"shotgunURL"];
+        [controller.values setValue:[NSString stringWithFormat:@"%@://%@", url.scheme, url.host] forKey:@"shotgunURL"];
     
     [NSApp beginSheet: self.passwordPanel
        modalForWindow: self.window
@@ -669,12 +669,12 @@
           contextInfo: nil];
     
     if(message) {
-        [self.passwordError setStringValue:message];
+        (self.passwordError).stringValue = message;
         [self.passwordError setHidden:NO];
     }
     
     NSInteger code = [NSApp runModalForWindow: self.passwordPanel];
-    NSString* password = [self.shotgunPasswordField stringValue];
+    NSString* password = (self.shotgunPasswordField).stringValue;
     [NSApp endSheet: self.passwordPanel];
     [self.passwordPanel orderOut: self];
     [self.passwordError setHidden:YES];
@@ -697,19 +697,19 @@
 
     if(username && url) {
         // I have tried and tried to make this work with iCloud but it is not worth the hassle
-        NSLog(@"Looking for %@ @ %@", username, [url host]);
+        NSLog(@"Looking for %@ @ %@", username, url.host);
         // http://stackoverflow.com/a/13532428/262455
         
         UInt32 returnpasswordLength = 0;
         
         status = SecKeychainFindInternetPassword(
                                                  NULL,
-                                                 (int)[[url host] length],
-                                                 (char *)[[url host] UTF8String],
+                                                 (int)url.host.length,
+                                                 (char *)url.host.UTF8String,
                                                  0,
                                                  NULL,
-                                                 (int)[username length],
-                                                 (char *)[username UTF8String],
+                                                 (int)username.length,
+                                                 (char *)username.UTF8String,
                                                  0,
                                                  nil,
                                                  0,
@@ -738,10 +738,10 @@
         if(!password) return Nil; // user cancelled
         
         // update values in case user changed them
-        url = [NSURL URLWithString:[[controller values] valueForKey:@"shotgunURL"]];
-        username = [[controller values] valueForKey:@"shotgunUsername"];
+        url = [NSURL URLWithString:[controller.values valueForKey:@"shotgunURL"]];
+        username = [controller.values valueForKey:@"shotgunUsername"];
         
-        if([[[controller values] valueForKey:@"savePassword"] boolValue]) {
+        if([[controller.values valueForKey:@"savePassword"] boolValue]) {
             shouldSavePassword = YES;
         }
     }
@@ -777,19 +777,19 @@
     if (shouldSavePassword) {
         status = SecKeychainAddInternetPassword(
                                                 NULL,
-                                                (int)[[url host] length],
-                                                (char *)[[url host] UTF8String],
+                                                (int)url.host.length,
+                                                (char *)url.host.UTF8String,
                                                 0,
                                                 NULL,
-                                                (int)[username length],
-                                                (char *)[username UTF8String],
+                                                (int)username.length,
+                                                (char *)username.UTF8String,
                                                 0,
                                                 nil,
                                                 0,
                                                 kSecProtocolTypeHTTPS,
                                                 kSecAuthenticationTypeDefault,
-                                                (int)[password length],
-                                                (char *)[password UTF8String],
+                                                (int)password.length,
+                                                (char *)password.UTF8String,
                                                 NULL
                                                 );
         NSLog(@"Password store status:%@", SecCopyErrorMessageString(status, NULL));
@@ -806,8 +806,7 @@
 /*    expected URL in the form
         sgscripts://sg_gantt?user_id=42&user_login=jack.james&title=&entity_type=Task&server_hostname=nightingale.shotgunstudio.com&referrer_path=%2Fdetail%2FHumanUser%2F42&page_id=1861&session_uuid=dd8841a0-41cb-11e5-9b33-0242ac110002&project_name=Nightingale%20VFX&project_id=67&ids=2076%2C2077%2C2078%2C2132%2C2133%2C2134%2C2135%2C2136%2C2137%2C2138&selected_ids=2076%2C2078%2C2132%2C2133%2C2136&cols=content&cols=step&cols=sg_status_list&cols=task_assignees&cols=start_date&cols=due_date&cols=duration&cols=entity&column_display_names=Task%20Name&column_display_names=Pipeline%20Step&column_display_names=Status&column_display_names=Assigned%20To&column_display_names=Start%20Date&column_display_names=Due%20Date&column_display_names=Duration&column_display_names=Link&grouping_column=entity&grouping_method=exact&grouping_direction=asc
 */
-    NSString* urlString = [[event paramDescriptorForKeyword:keyDirectObject]
-                     stringValue];
+    NSString* urlString = [event paramDescriptorForKeyword:keyDirectObject].stringValue;
     NSLog(@"%@", urlString);
     
     // convert to NSURL
@@ -815,7 +814,7 @@
     
     // filename will be the path
     // http://stackoverflow.com/a/1967451/262455
-    NSString *scriptFilename = [url host];
+    NSString *scriptFilename = url.host;
     NSDictionary *params = [url queryDictionary];
     
     // encode as json string
@@ -838,19 +837,19 @@
             path = [script valueForKey:@"filepath"];
         } else {
             path = [[NSBundle mainBundle] pathForResource:[script valueForKey:@"filename"] ofType:@"py"];
-            [script setObject:path forKey:@"filepath"];
+            script[@"filepath"] = path;
         }
         
         // Set URL and username
-        NSURL *siteURL = [[NSURL alloc] initWithScheme:@"https" host:[params objectForKey:@"server_hostname"] path:@"/"];
-        [script setValue:[siteURL absoluteString] forKey:@"siteURL"];
-        [script setValue:[params objectForKey:@"user_login"] forKey:@"username"];
+        NSURL *siteURL = [[NSURL alloc] initWithScheme:@"https" host:params[@"server_hostname"] path:@"/"];
+        [script setValue:siteURL.absoluteString forKey:@"siteURL"];
+        [script setValue:params[@"user_login"] forKey:@"username"];
         // Save URL and username to defaults as needed
         NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
         if(![controller.values valueForKey:@"shotgunURL"] || ![[controller.values valueForKey:@"shotgunURL"] length])
-            [[controller values] setValue:[NSString stringWithFormat:@"%@://%@", siteURL.scheme, siteURL.host] forKey:@"shotgunURL"];
+            [controller.values setValue:[NSString stringWithFormat:@"%@://%@", siteURL.scheme, siteURL.host] forKey:@"shotgunURL"];
         if(![controller.values valueForKey:@"shotgunUsername"] || ![[controller.values valueForKey:@"shotgunUsername"] length])
-            [[controller values] setValue:[params objectForKey:@"user_login"] forKey:@"shotgunUsername"];
+            [controller.values setValue:params[@"user_login"] forKey:@"shotgunUsername"];
 
         
         // set arguments (there's probably a cleaner way to do this)
@@ -863,7 +862,7 @@
             NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             [args addObject:jsonString];
         }
-        [script setObject:args forKey:@"arguments"];
+        script[@"arguments"] = args;
         
         // make the controller display the correct info
         [self resetScriptMenu];
@@ -876,7 +875,7 @@
         // this script should be selected automatically
         [self execPythonScript:script];
         // reset arguments
-        if(oldargs) [script setObject:oldargs forKey:@"arguments"];
+        if(oldargs) script[@"arguments"] = oldargs;
         else [script removeObjectForKey:@"arguments"];
     }
 }
@@ -885,7 +884,7 @@
 - (NSUInteger) indexOfScriptWithFilename: (NSString*) filename {
     return [scripts indexOfObjectPassingTest:
             ^BOOL(id dictionary, NSUInteger idx, BOOL *stop) {
-                return [[dictionary objectForKey: @"filename"] isEqualToString: filename];
+                return [dictionary[@"filename"] isEqualToString: filename];
             }];
 }
 
@@ -897,13 +896,13 @@
     NSString *foundData;
     if ([data rangeOfString:leftData].location != NSNotFound) {
         NSScanner *scanner=[NSScanner scannerWithString:data];
-        while ([scanner isAtEnd] == NO) {
+        while (scanner.atEnd == NO) {
             [scanner scanUpToString:leftData intoString: nil];
-            left = [scanner scanLocation];
-            [scanner setScanLocation:left + [leftData length]];
+            left = scanner.scanLocation;
+            scanner.scanLocation = left + leftData.length;
             [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil];
-            right = [scanner scanLocation] + 1;
-            left += [leftData length];
+            right = scanner.scanLocation + 1;
+            left += leftData.length;
             foundData = [data substringWithRange: NSMakeRange(left, (right - left) - 1)];
             return [foundData stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         }

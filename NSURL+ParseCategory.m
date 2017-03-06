@@ -21,13 +21,13 @@
     NSCharacterSet *slashSet = [NSCharacterSet characterSetWithRange:slashRange];
     
     // Get path with leading (and trailing) slashes removed
-    NSString *path = [[self path] stringByTrimmingCharactersInSet:slashSet];
+    NSString *path = [self.path stringByTrimmingCharactersInSet:slashSet];
     
     return [path componentsSeparatedByCharactersInSet:slashSet];
 }
 
 - (NSDictionary *)queryDictionary {
-    NSDictionary *returnDictionary = [[[self query] explodeToDictionaryInnerGlue:@"=" outterGlue:@"&"] copy];
+    NSDictionary *returnDictionary = [[self.query explodeToDictionaryInnerGlue:@"=" outterGlue:@"&"] copy];
     return returnDictionary;
 }
 

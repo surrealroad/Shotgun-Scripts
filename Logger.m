@@ -15,14 +15,14 @@
 
 @implementation Logger
 
-- (id)init {
+- (instancetype)init {
     //NSLog(@"Starting up");
     return [super init];
 }
 
 - (void)setLogMessage:(NSString*) message {
     NSLog(@"%@", message);
-    [self.textView setString:message];
+    (self.textView).string = message;
 }
 
 // http://stackoverflow.com/a/15173067/262455
@@ -33,8 +33,8 @@
 
 - (void)appendAttributedToTextView:(NSAttributedString*)attr {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self.textView textStorage] appendAttributedString:attr];
-        [self.textView scrollRangeToVisible:NSMakeRange([[self.textView string] length], 0)];
+        [(self.textView).textStorage appendAttributedString:attr];
+        [self.textView scrollRangeToVisible:NSMakeRange((self.textView).string.length, 0)];
     });
 }
 
