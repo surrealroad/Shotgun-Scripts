@@ -30,7 +30,6 @@ To set options for the scripts, include one or more of the following somewhere i
 Explanation of each:
 - `SGS_NAME` (string) - the name of the script, as displayed in the dropdown
 - `SGS_DESCRIPTION` (string) - the description of the script, which will be displayed in the window when the script is selected
-- `SGS_CHOOSEFOLDER` (string) - the filename of the script, without the extension
 - `SGS_CHOOSEFOLDER` (bool) - will prompt for a folder when the script runs
 - `SGS_CHOOSEFILE` (bool) - will prompt for a file when the script runs
 - `SGS_SAVEFILE` (bool) - will prompt to save a file when the script runs
