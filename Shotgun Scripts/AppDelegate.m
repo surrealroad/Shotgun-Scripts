@@ -554,7 +554,7 @@
 -(IBAction)closePreferences:(id)sender {
     [self.preferencesPanel makeFirstResponder:nil]; // required so all changes are committed
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
-    NSInteger code;
+    NSInteger code = 0;
     switch ([sender tag]) {
         case 0:
             // ok
@@ -577,7 +577,7 @@
 
 - (IBAction)closePassword:(id)sender {
     NSUserDefaultsController *controller = [NSUserDefaultsController sharedUserDefaultsController];
-    NSInteger code;
+    NSInteger code = 0;
     switch ([sender tag]) {
         case 0:
             // ok
